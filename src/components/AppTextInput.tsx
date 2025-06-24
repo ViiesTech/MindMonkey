@@ -2,6 +2,7 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from '../utils/Responsive_Dimensions';
@@ -27,6 +28,9 @@ type props = {
   borderColor?: any;
   onBlur?: any;
   isFocused?: any;
+  fontSize?:any;
+  inputTextAlignVertical?:any;
+  inputTextAlign?:any;
 };
 const AppTextInput = ({
   logo,
@@ -47,6 +51,9 @@ const AppTextInput = ({
   borderWidth,
   borderColor,
   isFocused,
+  fontSize,
+  inputTextAlignVertical,
+  inputTextAlign,
 }: props) => {
   return (
     <View
@@ -77,12 +84,15 @@ const AppTextInput = ({
           placeholderTextColor ? placeholderTextColor : AppColors.GRAY
         }
         style={{
+          fontSize: responsiveFontSize(fontSize),
           width: responsiveWidth(inputWidth),
           color: AppColors.BLACK,
           height: inputHeight ? responsiveHeight(inputHeight) : null,
           fontWeight: placeholderTextfontWeight
             ? placeholderTextfontWeight
             : null,
+            textAlignVertical: inputTextAlignVertical,
+            textAlign: inputTextAlign,
         }}
         secureTextEntry={secureTextEntry}
         textAlignVertical={textAlignVertical}

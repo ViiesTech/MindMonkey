@@ -13,7 +13,7 @@ const AgePicker = () => {
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    const index = Math.round(offsetY / ITEM_HEIGHT);
+    const index = Math.round(offsetY / ITEM_HEIGHT - 4);
     setSelectedAge(data[index]);
   };
 

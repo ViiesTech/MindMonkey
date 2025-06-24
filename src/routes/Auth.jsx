@@ -14,6 +14,10 @@ import YourAge from '../screens/auth/ProfileSetup/YourAge';
 import SetEmojiTheme from '../screens/auth/ProfileSetup/SetEmojiTheme';
 import ChooseColorTheme from '../screens/auth/ProfileSetup/ChooseColorTheme';
 import YourRecord from '../screens/auth/ProfileSetup/YourRecord';
+import DailyReminder from '../screens/auth/ProfileSetup/DailyReminder';
+import YourSocialRecord from '../screens/auth/ProfileSetup/YourSocialRecord';
+import ProfileFinalization from '../screens/auth/ProfileSetup/ProfileFinalization';
+import Feel from '../screens/auth/FeelFlow/Feel';
 
 const Stack = createStackNavigator();
 const Auth = () => {
@@ -35,6 +39,13 @@ const Auth = () => {
       <Stack.Screen name="SetEmojiTheme" component={SetEmojiTheme} />
       <Stack.Screen name="ChooseColorTheme" component={ChooseColorTheme} />
       <Stack.Screen name="YourRecord" component={YourRecord} />
+      <Stack.Screen name="DailyReminder" component={DailyReminder} />
+      <Stack.Screen name="YourSocialRecord" component={YourSocialRecord} />
+      <Stack.Screen
+        name="ProfileFinalization"
+        component={ProfileFinalization}
+      />
+      <Stack.Screen name="Feel" component={Feel} />
     </Stack.Navigator>
   );
 };

@@ -9,8 +9,16 @@ import AppIcons from '../../../assets/icons/AppIcons';
 import AppImages from '../../../assets/images/AppImages';
 import SatisfactionMeter from '../../../components/SatisfactionMeter';
 import HalfDonutMeter from '../../../components/SatisfactionMeter';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from '../../../utils/Responsive_Dimensions';
+import AppButton from '../../../components/AppButton';
+import {useCustomNavigation} from '../../../utils/Hooks';
 
 const Feel = () => {
+  const {navigateToRoute} = useCustomNavigation();
+
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
       <LineBreak space={4} />
@@ -35,40 +43,28 @@ const Feel = () => {
         />
       </View>
       <LineBreak space={4} />
-      <AppText
-        title={'how do you feel today?'}
-        textColor={AppColors.BLACK}
-        textFontWeight
-        textSize={2.8}
-        lineHeight={3.5}
-        textAlignment={'center'}
-        textTransform={'uppercase'}
-      />
-
-      <LineBreak space={4} />
 
       <View style={{alignItems: 'center'}}>
-        {/* <SVGXml icon={AppIcons.angry} width={20} height={20} /> */}
-        <View
+        <Image
+          source={AppImages.feel}
           style={{
-            width: 140,
-            height: 140,
+            width: responsiveWidth(100),
+            height: responsiveHeight(70),
             borderRadius: 100,
-            backgroundColor: '#000',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={AppImages.bad}
-            style={{
-              width: 200,
-              height: 200,
-              borderRadius: 100,
-              overflow: 'hidden',
-            }}
+          }}
+          resizeMode="contain"
+        />
+
+        <View>
+          <AppButton
+            title={'I feel bad'}
+            handlePress={() => navigateToRoute('MoreDetails')}
+            textSize={1.8}
+            btnBackgroundColor={AppColors.PRIMARY}
+            btnPadding={18}
+            btnWidth={90}
           />
         </View>
-        {/* <HalfDonutMeter /> */}
       </View>
     </View>
   );

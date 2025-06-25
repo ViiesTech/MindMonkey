@@ -31,6 +31,7 @@ type props = {
   fontSize?:any;
   inputTextAlignVertical?:any;
   inputTextAlign?:any;
+  lineHeight?:any;
 };
 const AppTextInput = ({
   logo,
@@ -54,6 +55,7 @@ const AppTextInput = ({
   fontSize,
   inputTextAlignVertical,
   inputTextAlign,
+  lineHeight,
 }: props) => {
   return (
     <View
@@ -85,6 +87,7 @@ const AppTextInput = ({
         }
         style={{
           fontSize: responsiveFontSize(fontSize),
+          lineHeight: responsiveHeight(lineHeight),
           width: responsiveWidth(inputWidth),
           color: AppColors.BLACK,
           height: inputHeight ? responsiveHeight(inputHeight) : null,

@@ -12,7 +12,9 @@ const ProfileFinalization = () => {
   const {navigateToRoute} = useCustomNavigation();
 
   useEffect(() => {
-    setTimeout(navigateToRoute('Feel'), 1500);
+    setTimeout(() => {
+      navigateToRoute('Feel');
+    }, 1500);
   }, [navigateToRoute]);
 
   return (

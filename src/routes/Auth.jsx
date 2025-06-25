@@ -18,6 +18,8 @@ import DailyReminder from '../screens/auth/ProfileSetup/DailyReminder';
 import YourSocialRecord from '../screens/auth/ProfileSetup/YourSocialRecord';
 import ProfileFinalization from '../screens/auth/ProfileSetup/ProfileFinalization';
 import Feel from '../screens/auth/FeelFlow/Feel';
+import MoreDetails from '../screens/auth/FeelFlow/MoreDetails';
+import ShareMood from '../screens/auth/FeelFlow/ShareMood';
 
 const Stack = createStackNavigator();
 const Auth = () => {
@@ -46,6 +48,8 @@ const Auth = () => {
         component={ProfileFinalization}
       />
       <Stack.Screen name="Feel" component={Feel} />
+      <Stack.Screen name="MoreDetails" component={MoreDetails} />
+      <Stack.Screen name="ShareMood" component={ShareMood} />
     </Stack.Navigator>
   );
 };

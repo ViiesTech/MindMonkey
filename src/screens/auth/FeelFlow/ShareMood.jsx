@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   Image,
@@ -20,6 +20,7 @@ import AppText from '../../../components/AppTextComps/AppText';
 import AppImages from '../../../assets/images/AppImages';
 import AppButton from '../../../components/AppButton';
 import {useCustomNavigation} from '../../../utils/Hooks';
+import SocialShareModal from '../../../components/SocialShareModal';
 
 const contentData = [
   {id: 1, title: 'Calm'},
@@ -43,13 +44,18 @@ const contentData = [
 ];
 
 const ShareMood = () => {
-  const {navigateToRoute} = useCustomNavigation();
+  const {navigateToRoute, goBack} = useCustomNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
       <LineBreak space={2} />
+      <SocialShareModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={{paddingHorizontal: responsiveWidth(5)}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => goBack()}>
           <Ionicons
             name={'close-outline'}
             size={responsiveFontSize(3)}
@@ -166,7 +172,7 @@ const ShareMood = () => {
         <View>
           <AppButton
             title={'share mood'}
-            handlePress={() => navigateToRoute('ShareMood')}
+            handlePress={() => setModalVisible(true)}
             textSize={1.8}
             leftIcon={
               <View style={{paddingHorizontal: responsiveWidth(2)}}>

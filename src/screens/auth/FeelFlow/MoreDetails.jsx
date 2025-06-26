@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, ScrollView, Image} from 'react-native';
+import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import AppText from '../../../components/AppTextComps/AppText';
 import LineBreak from '../../../components/LineBreak';
@@ -13,14 +13,26 @@ import AppTextInput from '../../../components/AppTextInput';
 import AppImages from '../../../assets/images/AppImages';
 import AppButton from '../../../components/AppButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useCustomNavigation } from '../../../utils/Hooks';
+import {useCustomNavigation} from '../../../utils/Hooks';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MoreDetails = () => {
-      const {navigateToRoute} = useCustomNavigation();
+  const {navigateToRoute, goBack} = useCustomNavigation();
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
       <LineBreak space={2} />
+
+      <TouchableOpacity
+        onPress={() => goBack()}
+        style={{paddingHorizontal: responsiveWidth(5)}}>
+        <Ionicons
+          name={'close-outline'}
+          size={responsiveFontSize(3)}
+          color={AppColors.BLACK}
+        />
+      </TouchableOpacity>
+
       <AppText
         title={'And More Details'}
         textColor={AppColors.BLACK}

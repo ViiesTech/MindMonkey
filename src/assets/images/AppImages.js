@@ -8,4 +8,5 @@ export default AppImages = {
     voice: require('./voice.png'),
     frame: require('./frame.png'),
     smile: require('./smile.png'),
+    profile: require('./profile.jpg'),
 };

@@ -241,7 +241,7 @@ const Login = () => {
 
             <AppButton
               title={'Sign In'}
-              handlePress={() => navigateToRoute('')}
+              handlePress={() => navigateToRoute('Main')}
               textSize={1.8}
               btnBackgroundColor={AppColors.PRIMARY}
               btnPadding={18}

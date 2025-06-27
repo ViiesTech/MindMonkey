@@ -9,4 +9,5 @@ export default AppImages = {
     frame: require('./frame.png'),
     smile: require('./smile.png'),
     profile: require('./profile.jpg'),
+    banner: require('./banner.png'),
 };

@@ -172,7 +172,10 @@ const ShareMood = () => {
         <View>
           <AppButton
             title={'share mood'}
-            handlePress={() => setModalVisible(true)}
+            handlePress={() => {
+              // setModalVisible(true)
+              navigateToRoute('AboutYourDay');
+            }}
             textSize={1.8}
             leftIcon={
               <View style={{paddingHorizontal: responsiveWidth(2)}}>

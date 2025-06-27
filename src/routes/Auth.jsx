@@ -20,6 +20,7 @@ import ProfileFinalization from '../screens/auth/ProfileSetup/ProfileFinalizatio
 import Feel from '../screens/auth/FeelFlow/Feel';
 import MoreDetails from '../screens/auth/FeelFlow/MoreDetails';
 import ShareMood from '../screens/auth/FeelFlow/ShareMood';
+import AboutYourDay from '../screens/auth/FeelFlow/AboutYourDay';
 
 const Stack = createStackNavigator();
 const Auth = () => {
@@ -50,6 +51,7 @@ const Auth = () => {
       <Stack.Screen name="Feel" component={Feel} />
       <Stack.Screen name="MoreDetails" component={MoreDetails} />
       <Stack.Screen name="ShareMood" component={ShareMood} />
+      <Stack.Screen name="AboutYourDay" component={AboutYourDay} />
     </Stack.Navigator>
   );
 };

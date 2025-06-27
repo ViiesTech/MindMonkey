@@ -7,10 +7,11 @@ import {
   responsiveHeight,
 } from '../utils/Responsive_Dimensions';
 import AppColors from '../utils/AppColors';
-import Home from '../screens/main/Home';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Home from '../screens/main/Home/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Insights from '../screens/main/Insights/Insights';
+import CalendarSN from '../screens/main/CalendarSN/CalendarSN';
+import Account from '../screens/main/Account/Account';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,43 +32,37 @@ function MyTabs() {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarLabelStyle: {fontSize: responsiveFontSize(1.4)},
-        tabBarActiveTintColor: AppColors.WHITE,
+        tabBarActiveTintColor: AppColors.BTNCOLOURS,
         tabBarStyle: {
           height: responsiveHeight(10),
-          // borderTopLeftRadius: 20,
-          // borderTopRightRadius: 20,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
           paddingTop: responsiveHeight(1.5),
-          backgroundColor: AppColors.BTNCOLOURS,
+          borderTopWidth: 1,
+          borderLeftWidth: 1,
+          borderRightWidth: 1,
+          backgroundColor: AppColors.WHITE,
         },
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Help Me') {
+          } else if (route.name === 'Account') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Lists') {
-            iconName = focused ? 'clipboard-list' : 'clipboard-list';
-          } else if (route.name === 'My Journal') {
-            iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Discover') {
-            iconName = focused ? 'explore' : 'explore';
+          } else if (route.name === 'Calendar') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Insights') {
+            iconName = focused ? 'bar-chart-sharp' : 'bar-chart-outline';
           }
 
-          if (route.name === 'Discover') {
-            return <MaterialIcons name={iconName} size={size} color={color} />;
-          } else if (route.name === 'Lists') {
-            return <FontAwesome5 name={iconName} size={size} color={color} />;
-          } else {
-            return <Ionicons name={iconName} size={size} color={color} />;
-          }
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}>
       <Tab.Screen name="Home" component={Home} />
-      {/* <Tab.Screen name="Discover" component={Explore} />
-      <Tab.Screen name="My Journal" component={Favorites} />
-      <Tab.Screen name="Lists" component={Lists} />
-      <Tab.Screen name="Help Me" component={Profile} /> */}
+      <Tab.Screen name="Insights" component={Insights} />
+      <Tab.Screen name="Calendar" component={CalendarSN} />
+      <Tab.Screen name="Account" component={Account} />
     </Tab.Navigator>
   );
 }

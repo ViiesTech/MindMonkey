@@ -25,6 +25,7 @@ import SavedToFavoritesPopup from '../../../components/SavedToFavoritesPopup';
 import CustomMenu from '../../../components/CustomMenu';
 import {useCustomNavigation} from '../../../utils/Hooks';
 import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
+import MainHeader from '../../../components/MainHeader';
 
 const contentData = [
   {id: 1, title: 'Calm'},
@@ -84,30 +85,18 @@ const Home = () => {
         setVisible={setVisible}
       />
       <LineBreak space={3} />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <View>
-          <SVGXml icon={AppIcons.smile} width={30} height={30} />
-        </View>
-        <AppText
-          title={'Home'}
-          textColor={AppColors.BLACK}
-          textSize={3}
-          textFontWeight
-          textAlignment={'center'}
-        />
-        <TouchableOpacity>
-          <Ionicons
-            name={'search'}
-            size={responsiveFontSize(3)}
-            color={AppColors.BLACK}
-          />
-        </TouchableOpacity>
-      </View>
+      <MainHeader
+        heading={'Home'}
+        rightIcon={
+          <TouchableOpacity>
+            <Ionicons
+              name={'search'}
+              size={responsiveFontSize(3)}
+              color={AppColors.BLACK}
+            />
+          </TouchableOpacity>
+        }
+      />
       <LineBreak space={2} />
 
       <Image

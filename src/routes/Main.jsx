@@ -12,6 +12,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Insights from '../screens/main/Insights/Insights';
 import CalendarSN from '../screens/main/CalendarSN/CalendarSN';
 import Account from '../screens/main/Account/Account';
+import ShiningStar from '../screens/main/Home/ShiningStar';
+import ShareAchievement from '../screens/main/Home/ShareAchievement';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,6 +24,8 @@ const Main = () => {
       initialRouteName="Main"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Main" component={MyTabs} />
+      <Stack.Screen name="ShiningStar" component={ShiningStar} />
+      <Stack.Screen name="ShareAchievement" component={ShareAchievement} />
     </Stack.Navigator>
   );
 };

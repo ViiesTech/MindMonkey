@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 // CustomMenu.tsx
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,6 +10,8 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { responsiveHeight, responsiveWidth } from '../utils/Responsive_Dimensions';
+import AppColors from '../utils/AppColors';
 
 type Props = {
     onEdit: Function,
@@ -56,10 +59,10 @@ const CustomMenu = ({onEdit, onSave, onDelete, visible, setVisible}: Props) => {
             <Icon
               name="trash-can-outline"
               size={18}
-              color="#d00"
+              color={AppColors.GRAY}
               style={{marginRight: 6}}
             />
-            <Text style={[styles.menuText, {color: '#d00'}]}>Delete</Text>
+            <Text style={styles.menuText}>Delete</Text>
           </TouchableOpacity>
         </View>
       </Pressable>
@@ -73,12 +76,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    paddingTop: 35,
-    paddingRight: 20,
+    paddingTop: responsiveHeight(35),
+    paddingRight: responsiveWidth(10),
   },
   menuBox: {
     width: 180,
-    backgroundColor: '#000',
+    backgroundColor: AppColors.LIGHTGRAY,
     borderRadius: 12,
     paddingVertical: 8,
     elevation: 8,

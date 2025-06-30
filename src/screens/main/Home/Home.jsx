@@ -23,6 +23,8 @@ import AppIcons from '../../../assets/icons/AppIcons';
 import AppImages from '../../../assets/images/AppImages';
 import SavedToFavoritesPopup from '../../../components/SavedToFavoritesPopup';
 import CustomMenu from '../../../components/CustomMenu';
+import {useCustomNavigation} from '../../../utils/Hooks';
+import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
 
 const contentData = [
   {id: 1, title: 'Calm'},
@@ -48,6 +50,8 @@ const contentData = [
 const Home = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const {navigateToRoute} = useCustomNavigation();
   const handleEdit = () => alert('Edit Pressed');
   const handleSave = () => alert('Saved to Favourites');
   const handleDelete = () => alert('Deleted');
@@ -63,11 +67,20 @@ const Home = () => {
         visible={showPopup}
         onHide={() => setShowPopup(false)}
       />
+      <DeleteMoodDairy
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <CustomMenu
-        handleEdit={handleEdit}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        visible={true}
+        onEdit={handleEdit}
+        onSave={() => {
+          setShowPopup(true);
+          setTimeout(() => {
+            navigateToRoute('ShiningStar');
+          }, 1500);
+        }}
+        onDelete={() => setModalVisible(true)}
+        visible={visible}
         setVisible={setVisible}
       />
       <LineBreak space={3} />

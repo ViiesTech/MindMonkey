@@ -1,14 +1,21 @@
 /* eslint-disable curly */
 // SavedToFavoritesPopup.tsx
-import React, { useEffect } from 'react';
-import { Text, StyleSheet, Animated } from 'react-native';
+import React, {useEffect} from 'react';
+import {Text, StyleSheet, Animated} from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from '../utils/Responsive_Dimensions';
+import AppColors from '../utils/AppColors';
 
 type Props = {
-    visible: boolean,
-    onHide: Function,
-}
+  visible: boolean;
+  onHide: Function;
+};
 
-const SavedToFavoritesPopup = ({ visible, onHide }: Props) => {
+const SavedToFavoritesPopup = ({visible, onHide}: Props) => {
   const opacity = new Animated.Value(0);
 
   useEffect(() => {
@@ -27,13 +34,18 @@ const SavedToFavoritesPopup = ({ visible, onHide }: Props) => {
         }),
       ]).start(() => onHide && onHide());
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   if (!visible) return null;
 
   return (
-    <Animated.View style={[styles.popup, { opacity }]}>
+    <Animated.View style={[styles.popup, {opacity}]}>
+      <AntDesign
+        name={'star'}
+        size={responsiveFontSize(3)}
+        color={AppColors.BTNCOLOURS}
+      />
       <Text style={styles.text}>Saved to favorites</Text>
     </Animated.View>
   );
@@ -42,7 +54,9 @@ const SavedToFavoritesPopup = ({ visible, onHide }: Props) => {
 const styles = StyleSheet.create({
   popup: {
     position: 'absolute',
-    top: 20,
+    top: responsiveHeight(35),
+    flexDirection: 'row',
+    alignItems: 'center',
     right: 20,
     backgroundColor: '#E5E5E5',
     paddingVertical: 6,
@@ -54,6 +68,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: '#333',
+    paddingHorizontal: responsiveWidth(2),
+    paddingVertical: responsiveHeight(2),
   },
 });
 

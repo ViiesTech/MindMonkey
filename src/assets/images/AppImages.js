@@ -10,4 +10,5 @@ export default AppImages = {
     smile: require('./smile.png'),
     profile: require('./profile.jpg'),
     banner: require('./banner.png'),
+    star: require('./star.png'),
 };

@@ -1,24 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity, Image} from 'react-native';
+import {TouchableOpacity, ScrollView} from 'react-native';
 import AppColors from '../../../utils/AppColors';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  responsiveWidth,
-} from '../../../utils/Responsive_Dimensions';
+import AppText from '../../../components/AppTextComps/AppText';
 import LineBreak from '../../../components/LineBreak';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AppImages from '../../../assets/images/AppImages';
+import {
+  responsiveFontSize,
+  responsiveWidth,
+} from '../../../utils/Responsive_Dimensions';
 import {useCustomNavigation} from '../../../utils/Hooks';
-import MainHeader from '../../../components/MainHeader';
 import Mood from '../../../components/Mood';
 
-const Home = () => {
+const Details = () => {
+  const {navigateToRoute, goBack} = useCustomNavigation();
   const [showPopup, setShowPopup] = useState(false);
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const {navigateToRoute} = useCustomNavigation();
 
   return (
     <ScrollView
@@ -27,31 +25,25 @@ const Home = () => {
         backgroundColor: AppColors.WHITE,
         paddingHorizontal: responsiveWidth(5),
       }}>
+      <LineBreak space={2} />
+      <TouchableOpacity onPress={() => goBack()}>
+        <Ionicons
+          name={'close-outline'}
+          size={responsiveFontSize(3)}
+          color={AppColors.BLACK}
+        />
+      </TouchableOpacity>
+      <LineBreak space={2} />
+      <AppText
+        title={'details'}
+        textColor={AppColors.BLACK}
+        textSize={3}
+        textFontWeight
+        textwidth={100}
+        textTransform={'uppercase'}
+        textAlignment={'center'}
+      />
       <LineBreak space={3} />
-      <MainHeader
-        heading={'Home'}
-        rightIcon={
-          <TouchableOpacity>
-            <Ionicons
-              name={'search'}
-              size={responsiveFontSize(3)}
-              color={AppColors.BLACK}
-            />
-          </TouchableOpacity>
-        }
-      />
-      <LineBreak space={2} />
-
-      <Image
-        source={AppImages.banner}
-        style={{
-          width: responsiveWidth(90),
-          height: responsiveHeight(17),
-          alignSelf: 'center',
-        }}
-        resizeMode="contain"
-      />
-      <LineBreak space={2} />
 
       <Mood
         verticalDotsOnPress={() => setVisible(true)}
@@ -69,9 +61,8 @@ const Home = () => {
           }, 1500);
         }}
       />
-      <LineBreak space={3} />
     </ScrollView>
   );
 };
 
-export default Home;
+export default Details;

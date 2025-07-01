@@ -11,8 +11,12 @@ import MainHeader from '../../../components/MainHeader';
 import AppColors from '../../../utils/AppColors';
 import Feather from 'react-native-vector-icons/Feather';
 import AppText from '../../../components/AppTextComps/AppText';
+import EmojiCalendar from '../../../components/EmojiCalendar';
+import {useCustomNavigation} from '../../../utils/Hooks';
+import YearlyCalendar from '../../../components/YearlyCalendar';
 
 const CalendarSN = () => {
+  const {navigateToRoute} = useCustomNavigation();
   const [selectedTab, setSelectedTab] = useState('monthly');
   return (
     <ScrollView style={{flex: 1, paddingHorizontal: responsiveWidth(5)}}>
@@ -35,8 +39,9 @@ const CalendarSN = () => {
       <View
         style={{
           backgroundColor: AppColors.LIGHTGRAY,
-          paddingHorizontal: responsiveWidth(2),
-          paddingVertical: responsiveHeight(1),
+          paddingHorizontal: responsiveWidth(2.5),
+          paddingVertical: responsiveHeight(2),
+          borderRadius: 5,
         }}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <TouchableOpacity
@@ -80,7 +85,31 @@ const CalendarSN = () => {
             />
           </TouchableOpacity>
         </View>
+
+        <LineBreak space={3} />
+
+        {selectedTab === 'monthly' ? (
+          <>
+            <EmojiCalendar />
+
+            <LineBreak space={2} />
+
+            <TouchableOpacity
+              style={{alignItems: 'center'}}
+              onPress={() => navigateToRoute('Details')}>
+              <AppText
+                title={'Tap to see more details.'}
+                textColor={AppColors.GRAY}
+                textSize={1.8}
+                textAlignment={'center'}
+              />
+            </TouchableOpacity>
+          </>
+        ) : null}
+
+        {selectedTab === 'yearly' ? <YearlyCalendar /> : null}
       </View>
+      <LineBreak space={2} />
     </ScrollView>
   );
 };

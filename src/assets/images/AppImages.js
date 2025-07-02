@@ -11,4 +11,5 @@ export default AppImages = {
     profile: require('./profile.jpg'),
     banner: require('./banner.png'),
     star: require('./star.png'),
+    account_banner: require('./account_banner.png'),
 };

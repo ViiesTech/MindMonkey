@@ -19,7 +19,7 @@ const CalendarSN = () => {
   const {navigateToRoute} = useCustomNavigation();
   const [selectedTab, setSelectedTab] = useState('monthly');
   return (
-    <ScrollView style={{flex: 1, paddingHorizontal: responsiveWidth(5)}}>
+    <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE, paddingHorizontal: responsiveWidth(5)}}>
       <LineBreak space={3} />
       <MainHeader
         heading={'Calendar'}

@@ -15,6 +15,7 @@ import Account from '../screens/main/Account/Account';
 import ShiningStar from '../screens/main/Home/ShiningStar';
 import ShareAchievement from '../screens/main/Home/ShareAchievement';
 import Details from '../screens/main/CalendarSN/Details';
+import UpgradePlan from '../screens/main/Account/UpgradePlan';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -28,6 +29,7 @@ const Main = () => {
       <Stack.Screen name="ShiningStar" component={ShiningStar} />
       <Stack.Screen name="ShareAchievement" component={ShareAchievement} />
       <Stack.Screen name="Details" component={Details} />
+      <Stack.Screen name="UpgradePlan" component={UpgradePlan} />
     </Stack.Navigator>
   );
 };

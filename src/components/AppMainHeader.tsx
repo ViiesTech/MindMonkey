@@ -12,9 +12,10 @@ import {useCustomNavigation} from '../utils/Hooks';
 
 type Props = {
   heading?: string;
+  rightIcon?: any;
 };
 
-const AppMainHeader = ({heading}: Props) => {
+const AppMainHeader = ({heading, rightIcon}: Props) => {
   const {goBack} = useCustomNavigation();
   return (
     <View
@@ -38,7 +39,7 @@ const AppMainHeader = ({heading}: Props) => {
         textSize={2}
         textFontWeight
       />
-      <View />
+      {rightIcon ? rightIcon : <View />}
     </View>
   );
 };

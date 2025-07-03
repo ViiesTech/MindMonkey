@@ -13,9 +13,10 @@ import {useCustomNavigation} from '../utils/Hooks';
 type Props = {
   heading?: string;
   rightIcon?: any;
+  textTransform?: any;
 };
 
-const AppMainHeader = ({heading, rightIcon}: Props) => {
+const AppMainHeader = ({heading, rightIcon, textTransform}: Props) => {
   const {goBack} = useCustomNavigation();
   return (
     <View
@@ -35,7 +36,7 @@ const AppMainHeader = ({heading, rightIcon}: Props) => {
       <AppText
         title={heading}
         textColor={AppColors.BLACK}
-        textTransform={'uppercase'}
+        textTransform={textTransform ? textTransform : 'uppercase'}
         textSize={2}
         textFontWeight
       />

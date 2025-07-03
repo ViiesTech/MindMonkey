@@ -18,6 +18,8 @@ import Details from '../screens/main/CalendarSN/Details';
 import UpgradePlan from '../screens/main/Account/UpgradePlan';
 import ChoosePaymentMethod from '../screens/main/Account/ChoosePaymentMethod';
 import BenefitsUnlocked from '../screens/main/Account/BenefitsUnlocked';
+import Achievements from '../screens/main/Account/Achievements';
+import Favorites from '../screens/main/Account/Favorites';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,6 +36,8 @@ const Main = () => {
       <Stack.Screen name="UpgradePlan" component={UpgradePlan} />
       <Stack.Screen name="ChoosePaymentMethod" component={ChoosePaymentMethod} />
       <Stack.Screen name="BenefitsUnlocked" component={BenefitsUnlocked} />
+      <Stack.Screen name="Achievements" component={Achievements} />
+      <Stack.Screen name="Favorites" component={Favorites} />
     </Stack.Navigator>
   );
 };

@@ -43,7 +43,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
-    navTo: '',
+    navTo: 'Achievements',
   },
   {
     id: 2,
@@ -62,6 +62,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'Favorites',
   },
   {
     id: 3,
@@ -493,7 +494,11 @@ const Account = () => {
                 paddingHorizontal: responsiveWidth(4),
                 backgroundColor: AppColors.WHITE,
               }}
-              onPress={() => {}}>
+              onPress={() => {
+                if(item.navTo){
+                  navigateToRoute(item.navTo);
+                }
+              }}>
               <View
                 style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
                 {item.leftIcon}

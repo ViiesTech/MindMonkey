@@ -43,15 +43,16 @@ const contentData = [
 ];
 
 type Props = {
-  verticalDotsOnPress: Function;
-  onHide: Function;
-  showPopup: boolean;
-  modalVisible: boolean;
-  visible: boolean;
-  setModalVisible: Function;
-  onSave: Function;
-  onDelete: Function;
-  setVisible: Function;
+  verticalDotsOnPress?: Function;
+  onHide?: Function;
+  showPopup?: boolean;
+  modalVisible?: boolean;
+  visible?: boolean;
+  setModalVisible?: Function;
+  onSave?: Function;
+  onDelete?: Function;
+  setVisible?: Function;
+  isChangeFavText?: boolean;
 };
 
 const Mood = ({
@@ -64,10 +65,15 @@ const Mood = ({
   onSave,
   onDelete,
   setVisible,
+  isChangeFavText,
 }: Props) => {
   return (
     <View>
-      <SavedToFavoritesPopup visible={showPopup} onHide={onHide} />
+      <SavedToFavoritesPopup
+        visible={showPopup}
+        onHide={onHide}
+        isChangeFavText={isChangeFavText}
+      />
       <DeleteMoodDairy
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -78,6 +84,7 @@ const Mood = ({
         onDelete={onDelete}
         visible={visible}
         setVisible={setVisible}
+        isChangeFavText={isChangeFavText}
       />
       <View
         style={{
@@ -155,7 +162,9 @@ const Mood = ({
               flexWrap: 'wrap',
               gap: 5,
             }}
-            ItemSeparatorComponent={<LineBreak space={0.5} />}
+            numColumns={3}
+            columnWrapperStyle={{gap: 10}}
+            ItemSeparatorComponent={<LineBreak space={1} />}
             renderItem={({item}) => {
               return (
                 <TouchableOpacity

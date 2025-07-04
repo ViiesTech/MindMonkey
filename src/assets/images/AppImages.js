@@ -13,4 +13,5 @@ export default AppImages = {
     star: require('./star.png'),
     account_banner: require('./account_banner.png'),
     king: require('./king.png'),
+    volume: require('./volume.png'),
 };

@@ -20,6 +20,10 @@ import ChoosePaymentMethod from '../screens/main/Account/ChoosePaymentMethod';
 import BenefitsUnlocked from '../screens/main/Account/BenefitsUnlocked';
 import Achievements from '../screens/main/Account/Achievements';
 import Favorites from '../screens/main/Account/Favorites';
+import PhotoGallery from '../screens/main/Account/PhotoGallery';
+import DailyReminders from '../screens/main/Account/DailyReminders';
+import ExportData from '../screens/main/Account/ExportData';
+import Preferences from '../screens/main/Account/Preferences';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -38,6 +42,10 @@ const Main = () => {
       <Stack.Screen name="BenefitsUnlocked" component={BenefitsUnlocked} />
       <Stack.Screen name="Achievements" component={Achievements} />
       <Stack.Screen name="Favorites" component={Favorites} />
+      <Stack.Screen name="PhotoGallery" component={PhotoGallery} />
+      <Stack.Screen name="DailyReminders" component={DailyReminders} />
+      <Stack.Screen name="ExportData" component={ExportData} />
+      <Stack.Screen name="Preferences" component={Preferences} />
     </Stack.Navigator>
   );
 };

@@ -81,6 +81,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'PhotoGallery',
   },
   {
     id: 4,
@@ -99,6 +100,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'DailyReminders',
   },
   {
     id: 5,
@@ -153,6 +155,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'ExportData',
   },
   {
     id: 8,
@@ -171,6 +174,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'Preferences',
   },
   {
     id: 9,

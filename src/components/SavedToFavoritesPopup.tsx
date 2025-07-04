@@ -12,10 +12,11 @@ import AppColors from '../utils/AppColors';
 
 type Props = {
   visible: boolean;
+  isChangeFavText?: boolean;
   onHide: Function;
 };
 
-const SavedToFavoritesPopup = ({visible, onHide}: Props) => {
+const SavedToFavoritesPopup = ({visible, onHide, isChangeFavText}: Props) => {
   const opacity = new Animated.Value(0);
 
   useEffect(() => {
@@ -40,13 +41,22 @@ const SavedToFavoritesPopup = ({visible, onHide}: Props) => {
   if (!visible) return null;
 
   return (
-    <Animated.View style={[styles.popup, {opacity}]}>
+    <Animated.View
+      style={[
+        styles.popup,
+        {opacity},
+        {
+          top: isChangeFavText ? responsiveHeight(16) : responsiveHeight(35),
+        },
+      ]}>
       <AntDesign
         name={'star'}
         size={responsiveFontSize(3)}
         color={AppColors.BTNCOLOURS}
       />
-      <Text style={styles.text}>Saved to favorites</Text>
+      <Text style={styles.text}>
+        {isChangeFavText ? 'Removed to favorites' : 'Saved to favorites'}
+      </Text>
     </Animated.View>
   );
 };
@@ -54,7 +64,6 @@ const SavedToFavoritesPopup = ({visible, onHide}: Props) => {
 const styles = StyleSheet.create({
   popup: {
     position: 'absolute',
-    top: responsiveHeight(35),
     flexDirection: 'row',
     alignItems: 'center',
     right: 20,

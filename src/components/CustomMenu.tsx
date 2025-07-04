@@ -10,25 +10,43 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { responsiveHeight, responsiveWidth } from '../utils/Responsive_Dimensions';
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from '../utils/Responsive_Dimensions';
 import AppColors from '../utils/AppColors';
 
 type Props = {
-    onEdit: Function,
-    onSave: Function,
-    onDelete: Function,
-    setVisible: Function,
-    visible: boolean,
-}
+  onEdit: Function;
+  onSave: Function;
+  onDelete: Function;
+  setVisible: Function;
+  visible: boolean;
+  isChangeFavText?: boolean;
+};
 
-
-const CustomMenu = ({onEdit, onSave, onDelete, visible, setVisible}: Props) => {
-
+const CustomMenu = ({
+  onEdit,
+  onSave,
+  onDelete,
+  visible,
+  setVisible,
+  isChangeFavText,
+}: Props) => {
   const closeMenu = () => setVisible(false);
 
   return (
     <Modal visible={visible} transparent animationType="fade">
-      <Pressable style={styles.overlay} onPress={closeMenu}>
+      <Pressable
+        style={[
+          styles.overlay,
+          {
+            paddingTop: isChangeFavText
+              ? responsiveHeight(16)
+              : responsiveHeight(35),
+          },
+        ]}
+        onPress={closeMenu}>
         <View style={styles.menuBox}>
           <TouchableOpacity
             onPress={() => {
@@ -46,7 +64,9 @@ const CustomMenu = ({onEdit, onSave, onDelete, visible, setVisible}: Props) => {
               closeMenu();
             }}
             style={styles.menuItem}>
-            <Text style={styles.menuText}>Save to favourites</Text>
+            <Text style={styles.menuText}>
+              {isChangeFavText ? 'Remove to favourites' : 'Save to favourites'}
+            </Text>
           </TouchableOpacity>
           <View style={styles.divider} />
 
@@ -76,7 +96,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
-    paddingTop: responsiveHeight(35),
     paddingRight: responsiveWidth(10),
   },
   menuBox: {

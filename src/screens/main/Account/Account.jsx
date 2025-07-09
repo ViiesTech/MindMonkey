@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -24,6 +24,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useCustomNavigation} from '../../../utils/Hooks';
+import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
 
 const data = [
   {
@@ -344,6 +345,8 @@ const data = [
 
 const Account = () => {
   const {navigateToRoute} = useCustomNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <ScrollView
       style={{
@@ -362,6 +365,14 @@ const Account = () => {
             />
           </TouchableOpacity>
         }
+      />
+
+      <DeleteMoodDairy
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        heading={'LOGOUT'}
+        title={'Sure you want to logout?'}
+        handlePress={() => navigateToRoute('Auth')}
       />
 
       <LineBreak space={3} />
@@ -510,6 +521,8 @@ const Account = () => {
               onPress={() => {
                 if (item.navTo) {
                   navigateToRoute(item.navTo, {data: item.data});
+                } else if (item.id == 17) {
+                  setModalVisible(true);
                 }
               }}>
               <View

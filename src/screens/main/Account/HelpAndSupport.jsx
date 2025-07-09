@@ -16,8 +16,8 @@ import {useCustomNavigation} from '../../../utils/Hooks';
 const language = [
   {id: 1, title: 'FAQ', navTo: 'Faq'},
   {id: 2, title: 'Contact Support', navTo: 'ContactSupport'},
-  {id: 3, title: 'Privacy Policy', navTo: ''},
-  {id: 4, title: 'Terms of Service', navTo: ''},
+  {id: 3, title: 'Privacy Policy', navTo: 'PrivacyPolicy'},
+  {id: 4, title: 'Terms of Service', navTo: 'TermsOfService'},
   {id: 5, title: 'Partner', navTo: ''},
   {id: 6, title: 'Job Vacancy', navTo: ''},
   {id: 7, title: 'Accessiblity', navTo: ''},

@@ -38,6 +38,8 @@ import AppLanguage from '../screens/main/Account/AppLanguage';
 import HelpAndSupport from '../screens/main/Account/HelpAndSupport';
 import Faq from '../screens/main/Account/Faq';
 import ContactSupport from '../screens/main/Account/ContactSupport';
+import PrivacyPolicy from '../screens/main/Account/PrivacyPolicy';
+import TermsOfService from '../screens/main/Account/TermsOfService';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -80,6 +82,8 @@ const Main = () => {
       <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
       <Stack.Screen name="Faq" component={Faq} />
       <Stack.Screen name="ContactSupport" component={ContactSupport} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <Stack.Screen name="TermsOfService" component={TermsOfService} />
     </Stack.Navigator>
   );
 };

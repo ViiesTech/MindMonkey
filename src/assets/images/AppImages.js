@@ -14,4 +14,10 @@ export default AppImages = {
     account_banner: require('./account_banner.png'),
     king: require('./king.png'),
     volume: require('./volume.png'),
+    mood_chart: require('./mood_chart.png'),
+    mood_count: require('./mood_count.png'),
+    mood_stability: require('./mood_stability.png'),
+    app_logo: require('./App_logo.png'),
+    cloud_one: require('./cloud_one.png'),
+    cloud_two: require('./cloud_two.png'),
 };

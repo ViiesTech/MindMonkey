@@ -21,13 +21,15 @@ import Feel from '../screens/auth/FeelFlow/Feel';
 import MoreDetails from '../screens/auth/FeelFlow/MoreDetails';
 import ShareMood from '../screens/auth/FeelFlow/ShareMood';
 import AboutYourDay from '../screens/auth/FeelFlow/AboutYourDay';
+import Splash from '../screens/auth/Splash';
 
 const Stack = createStackNavigator();
 const Auth = () => {
   return (
     <Stack.Navigator
-      initialRouteName="GetStarted"
+      initialRouteName="Splash"
       screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="OnBoarding" component={OnBoarding} />
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="Login" component={Login} />

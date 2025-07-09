@@ -17,6 +17,7 @@ const DeleteMoodDairy = ({
   heading,
   title,
   subTitle,
+  handlePress,
 }: any) => {
   return (
     <Modal
@@ -47,17 +48,21 @@ const DeleteMoodDairy = ({
             }}>
             <AppText
               title={title ? title : 'Sure you want to delete this mood dairy?'}
-              textColor={AppColors.GRAY}
+              textColor={
+                heading === 'LOGOUT' ? AppColors.BLACK : AppColors.GRAY
+              }
               textSize={2}
               textAlignment={'center'}
             />
-            <LineBreak space={1} />
-            <AppText
-              title={subTitle ? subTitle : 'This action cannot be undone.'}
-              textColor={AppColors.GRAY}
-              textSize={1.5}
-              textAlignment={'center'}
-            />
+            {heading === 'LOGOUT' ? null : <LineBreak space={1} />}
+            {heading !== 'LOGOUT' && (
+              <AppText
+                title={subTitle ? subTitle : 'This action cannot be undone.'}
+                textColor={AppColors.GRAY}
+                textSize={1.5}
+                textAlignment={'center'}
+              />
+            )}
           </View>
           <LineBreak space={3} />
 
@@ -72,15 +77,23 @@ const DeleteMoodDairy = ({
               handlePress={() => setModalVisible(false)}
               textSize={1.8}
               btnBackgroundColor={AppColors.LIGHTGRAY}
-              textColor={AppColors.GRAY}
+              textColor={
+                heading === 'LOGOUT' ? AppColors.BLACK : AppColors.GRAY
+              }
               textFontWeight={false}
               btnPadding={15}
               borderRadius={20}
               btnWidth={42}
             />
             <AppButton
-              title={'Yes, Delete'}
-              handlePress={() => setModalVisible(false)}
+              title={heading === 'LOGOUT' ? 'OK' : 'Yes, Delete'}
+              handlePress={() => {
+                if(heading === 'LOGOUT'){
+                  handlePress();
+                }else{
+                  setModalVisible(false);
+                }
+              }}
               textSize={1.8}
               btnBackgroundColor={AppColors.PRIMARY}
               textFontWeight={false}

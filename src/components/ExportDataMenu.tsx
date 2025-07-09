@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import AppText from './AppTextComps/AppText';
 import AppColors from '../utils/AppColors';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -9,11 +9,14 @@ import {responsiveFontSize} from '../utils/Responsive_Dimensions';
 type Props = {
   title?: string;
   time?: string;
+  containerOnPress?: any;
 };
 
-const ExportDataMenu = ({title, time}: Props) => {
+const ExportDataMenu = ({title, time, containerOnPress}: Props) => {
   return (
-    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+    <TouchableOpacity
+      style={{flexDirection: 'row', justifyContent: 'space-between'}}
+      onPress={containerOnPress}>
       <AppText
         title={title}
         textColor={AppColors.BLACK}
@@ -31,7 +34,7 @@ const ExportDataMenu = ({title, time}: Props) => {
           color={AppColors.BLACK}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

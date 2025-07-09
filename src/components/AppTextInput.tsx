@@ -28,10 +28,12 @@ type props = {
   borderColor?: any;
   onBlur?: any;
   isFocused?: any;
-  fontSize?:any;
-  inputTextAlignVertical?:any;
-  inputTextAlign?:any;
-  lineHeight?:any;
+  fontSize?: any;
+  inputTextAlignVertical?: any;
+  inputTextAlign?: any;
+  lineHeight?: any;
+  borderRadius?: any;
+  inputContainerPaddingHorizontal?: any;
 };
 const AppTextInput = ({
   logo,
@@ -56,6 +58,8 @@ const AppTextInput = ({
   inputTextAlignVertical,
   inputTextAlign,
   lineHeight,
+  borderRadius,
+  inputContainerPaddingHorizontal,
 }: props) => {
   return (
     <View
@@ -66,9 +70,11 @@ const AppTextInput = ({
           : isFocused
           ? AppColors.inputBlur
           : AppColors.inputBg,
-        paddingHorizontal: 20,
+        paddingHorizontal: inputContainerPaddingHorizontal
+          ? responsiveWidth(inputContainerPaddingHorizontal)
+          : 20,
         paddingVertical: 5,
-        borderRadius: 12,
+        borderRadius: borderRadius ? borderRadius : 12,
         alignItems: 'center',
         gap: 10,
         borderWidth: isFocused ? 1 : borderWidth || 1,
@@ -94,8 +100,8 @@ const AppTextInput = ({
           fontWeight: placeholderTextfontWeight
             ? placeholderTextfontWeight
             : null,
-            textAlignVertical: inputTextAlignVertical,
-            textAlign: inputTextAlign,
+          textAlignVertical: inputTextAlignVertical,
+          textAlign: inputTextAlign,
         }}
         secureTextEntry={secureTextEntry}
         textAlignVertical={textAlignVertical}

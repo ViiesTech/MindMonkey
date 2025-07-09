@@ -23,6 +23,7 @@ type Props = {
   setVisible: Function;
   visible: boolean;
   isChangeFavText?: boolean;
+  manageActivities?: boolean;
 };
 
 const CustomMenu = ({
@@ -32,6 +33,7 @@ const CustomMenu = ({
   visible,
   setVisible,
   isChangeFavText,
+  manageActivities,
 }: Props) => {
   const closeMenu = () => setVisible(false);
 
@@ -65,7 +67,7 @@ const CustomMenu = ({
             }}
             style={styles.menuItem}>
             <Text style={styles.menuText}>
-              {isChangeFavText ? 'Remove to favourites' : 'Save to favourites'}
+              {isChangeFavText ? manageActivities ? 'Remove' : 'Remove to favourites' : 'Save to favourites'}
             </Text>
           </TouchableOpacity>
           <View style={styles.divider} />

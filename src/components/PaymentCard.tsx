@@ -17,9 +17,16 @@ type Props = {
   isSelected?: any;
   onPress?: any;
   upgradePlan?: any;
+  linkedAccount?: any;
 };
 
-const PaymentCard = ({item, isSelected, onPress, upgradePlan}: Props) => {
+const PaymentCard = ({
+  item,
+  isSelected,
+  onPress,
+  upgradePlan,
+  linkedAccount,
+}: Props) => {
   return (
     <TouchableOpacity
       style={{
@@ -52,12 +59,14 @@ const PaymentCard = ({item, isSelected, onPress, upgradePlan}: Props) => {
               textSize={2}
               textFontWeight
             />
-            <LineBreak space={0.2} />
-            <AppText
-              title={item.subTitle}
-              textColor={AppColors.DARKGRAY}
-              textSize={1.4}
-            />
+            {item.subTitle && <LineBreak space={0.2} />}
+            {item.subTitle && (
+              <AppText
+                title={item.subTitle}
+                textColor={AppColors.DARKGRAY}
+                textSize={1.4}
+              />
+            )}
           </View>
         </View>
         {isSelected ? (
@@ -72,6 +81,15 @@ const PaymentCard = ({item, isSelected, onPress, upgradePlan}: Props) => {
             <AppText
               title={'Change'}
               textColor={AppColors.PRIMARY}
+              textSize={2}
+            />
+          </View>
+        ) : null}
+        {linkedAccount ? (
+          <View>
+            <AppText
+              title={item.id == 1 ? 'Link' : 'Linked'}
+              textColor={'green'}
               textSize={2}
             />
           </View>

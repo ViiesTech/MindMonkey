@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
 import {
   Text,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  View,
 } from 'react-native';
-import { responsiveHeight, responsiveWidth } from '../utils/Responsive_Dimensions';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from '../utils/Responsive_Dimensions';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import AppColors from '../utils/AppColors';
 
-const EmojiThemePicker = ({emojiThemes, setSelectedThemeIndex, selectedThemeIndex}: any) => {
+const EmojiThemePicker = ({
+  emojiThemes,
+  setSelectedThemeIndex,
+  selectedThemeIndex,
+  isEdit = false,
+  handleOnEdit,
+}: any) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {emojiThemes?.map((theme, index) => (
@@ -15,17 +29,40 @@ const EmojiThemePicker = ({emojiThemes, setSelectedThemeIndex, selectedThemeInde
           key={index}
           style={[
             styles.emojiRow,
+            {position: 'relative'},
             selectedThemeIndex === index && styles.selectedRow,
           ]}
-          onPress={() => setSelectedThemeIndex && setSelectedThemeIndex(index)}
-        >
-          {theme?.map((emoji, emojiIndex) => (
+          onPress={() => setSelectedThemeIndex && setSelectedThemeIndex(index)}>
+          {theme?.map((emoji: any, emojiIndex: any) => (
             <Text key={emojiIndex} style={styles.emoji}>
               {emoji}
             </Text>
           ))}
           {index === emojiThemes?.length - 1 && (
             <Text style={styles.premium}>👑</Text> // Optional: Use Icon
+          )}
+          {isEdit && (
+            <View
+              style={{
+                position: 'absolute',
+                top: responsiveHeight(-1.5),
+                right: 0,
+              }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: AppColors.PRIMARY,
+                  padding: 5,
+                  borderRadius: 100,
+                }}
+                onPress={handleOnEdit}
+                >
+                <AntDesign
+                  name={'edit'}
+                  size={responsiveFontSize(2)}
+                  color={AppColors.WHITE}
+                />
+              </TouchableOpacity>
+            </View>
           )}
         </TouchableOpacity>
       ))}

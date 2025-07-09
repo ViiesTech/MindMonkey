@@ -53,16 +53,17 @@ const data = [
   },
 ];
 
-const ChoosePaymentMethod = () => {
+const ChoosePaymentMethod = ({route}) => {
   const [isSelected, setIsSelected] = useState({id: 0});
   const {navigateToRoute} = useCustomNavigation();
+  const isChanged = route?.params?.data;
 
   return (
     <ScrollView style={{flex: 1, paddingHorizontal: responsiveWidth(5)}}>
       <AppMainHeader
         heading="Choose Payment Method"
         rightIcon={
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateToRoute('AddNewPayment')}>
             <Entypo
               name={'plus'}
               size={responsiveFontSize(3)}
@@ -79,8 +80,15 @@ const ChoosePaymentMethod = () => {
           return (
             <PaymentCard
               item={item}
-              isSelected={isSelected?.id == item.id}
-              onPress={() => setIsSelected({id: item.id})}
+              isSelected={isChanged ? null : isSelected?.id == item.id}
+              onPress={() => {
+                if (isChanged) {
+                  return null;
+                } else {
+                  setIsSelected({id: item.id});
+                }
+              }}
+              linkedAccount={isChanged ? true : false}
             />
           );
         }}
@@ -90,8 +98,14 @@ const ChoosePaymentMethod = () => {
 
       <View>
         <AppButton
-          title={'Finish'}
-          handlePress={() => navigateToRoute('BenefitsUnlocked')}
+          title={isChanged ? 'Add new payment method' : 'Finish'}
+          handlePress={() => {
+            if (isChanged) {
+              navigateToRoute('AddNewPayment');
+            } else {
+              navigateToRoute('BenefitsUnlocked');
+            }
+          }}
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

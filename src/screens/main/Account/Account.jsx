@@ -119,6 +119,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'EditMoodsColors',
   },
   {
     id: 6,
@@ -137,6 +138,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'ManageActivities',
   },
   {
     id: 7,
@@ -211,6 +213,8 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'ChoosePaymentMethod',
+    data: true,
   },
   {
     id: 11,
@@ -229,6 +233,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'BillingAndSubscription',
   },
   {
     id: 12,
@@ -247,6 +252,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'LinkedAccount',
   },
   {
     id: 13,
@@ -265,6 +271,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'AppAppearance',
   },
   {
     id: 14,
@@ -283,6 +290,7 @@ const data = [
         color={AppColors.BLACK}
       />
     ),
+    navTo: 'HelpAndSupport',
   },
   {
     id: 15,
@@ -378,7 +386,8 @@ const Account = () => {
           borderRadius: 10,
           paddingHorizontal: responsiveWidth(4),
           paddingVertical: responsiveHeight(1.5),
-        }}>
+        }}
+        onPress={() => navigateToRoute('PersonalInfo')}>
         <View
           style={{
             flexDirection: 'row',
@@ -499,8 +508,8 @@ const Account = () => {
                 backgroundColor: AppColors.WHITE,
               }}
               onPress={() => {
-                if(item.navTo){
-                  navigateToRoute(item.navTo);
+                if (item.navTo) {
+                  navigateToRoute(item.navTo, {data: item.data});
                 }
               }}>
               <View

@@ -24,6 +24,20 @@ import PhotoGallery from '../screens/main/Account/PhotoGallery';
 import DailyReminders from '../screens/main/Account/DailyReminders';
 import ExportData from '../screens/main/Account/ExportData';
 import Preferences from '../screens/main/Account/Preferences';
+import EditMoodsColors from '../screens/main/Account/EditMoodsColors';
+import SetEmojiTheme from '../screens/auth/ProfileSetup/SetEmojiTheme';
+import ManageActivities from '../screens/main/Account/ManageActivities';
+import ManageActivitiesDetails from '../screens/main/Account/ManageActivitiesDetails';
+import SelectActivityEmoji from '../screens/main/Account/SelectActivityEmoji';
+import PersonalInfo from '../screens/main/Account/PersonalInfo';
+import LinkedAccount from '../screens/main/Account/LinkedAccount';
+import BillingAndSubscription from '../screens/main/Account/BillingAndSubscription';
+import AddNewPayment from '../screens/main/Account/AddNewPayment';
+import AppAppearance from '../screens/main/Account/AppAppearance';
+import AppLanguage from '../screens/main/Account/AppLanguage';
+import HelpAndSupport from '../screens/main/Account/HelpAndSupport';
+import Faq from '../screens/main/Account/Faq';
+import ContactSupport from '../screens/main/Account/ContactSupport';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -38,7 +52,10 @@ const Main = () => {
       <Stack.Screen name="ShareAchievement" component={ShareAchievement} />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="UpgradePlan" component={UpgradePlan} />
-      <Stack.Screen name="ChoosePaymentMethod" component={ChoosePaymentMethod} />
+      <Stack.Screen
+        name="ChoosePaymentMethod"
+        component={ChoosePaymentMethod}
+      />
       <Stack.Screen name="BenefitsUnlocked" component={BenefitsUnlocked} />
       <Stack.Screen name="Achievements" component={Achievements} />
       <Stack.Screen name="Favorites" component={Favorites} />
@@ -46,6 +63,23 @@ const Main = () => {
       <Stack.Screen name="DailyReminders" component={DailyReminders} />
       <Stack.Screen name="ExportData" component={ExportData} />
       <Stack.Screen name="Preferences" component={Preferences} />
+      <Stack.Screen name="EditMoodsColors" component={EditMoodsColors} />
+      <Stack.Screen name="SetEmojiTheme" component={SetEmojiTheme} />
+      <Stack.Screen name="ManageActivities" component={ManageActivities} />
+      <Stack.Screen
+        name="ManageActivitiesDetails"
+        component={ManageActivitiesDetails}
+      />
+      <Stack.Screen name="SelectActivityEmoji" component={SelectActivityEmoji} />
+      <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
+      <Stack.Screen name="LinkedAccount" component={LinkedAccount} />
+      <Stack.Screen name="BillingAndSubscription" component={BillingAndSubscription} />
+      <Stack.Screen name="AddNewPayment" component={AddNewPayment} />
+      <Stack.Screen name="AppAppearance" component={AppAppearance} />
+      <Stack.Screen name="AppLanguage" component={AppLanguage} />
+      <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
+      <Stack.Screen name="Faq" component={Faq} />
+      <Stack.Screen name="ContactSupport" component={ContactSupport} />
     </Stack.Navigator>
   );
 };

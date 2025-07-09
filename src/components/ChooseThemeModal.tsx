@@ -1,23 +1,35 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/self-closing-comp */
 import React from 'react';
-import {View, Modal, StyleSheet} from 'react-native';
+import {
+  View,
+  Modal,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import AppColors from '../utils/AppColors';
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from '../utils/Responsive_Dimensions';
 import AppText from './AppTextComps/AppText';
 import LineBreak from './LineBreak';
 import AppButton from './AppButton';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const DeleteMoodDairy = ({
-  modalVisible,
-  setModalVisible,
-  heading,
-  title,
-  subTitle,
-}: any) => {
+type Props = {
+  modalVisible: boolean;
+  setModalVisible: Function;
+};
+
+const data = [
+  {id: 1, title: 'System Default'},
+  {id: 2, title: 'Light'},
+  {id: 3, title: 'Dark'},
+];
+
+const ChooseThemeModal = ({modalVisible, setModalVisible}: Props) => {
   return (
     <Modal
       animationType="slide"
@@ -27,36 +39,48 @@ const DeleteMoodDairy = ({
       <View style={styles.modalBackground}>
         <View style={styles.modalView}>
           <AppText
-            title={heading ? heading : 'delete mood dairy'}
-            textColor={'red'}
+            title={'Choose Theme'}
+            textColor={AppColors.BLACK}
             textFontWeight
             textSize={2.5}
             textAlignment={'center'}
-            textTransform={heading ? 'normal' : 'uppercase'}
           />
 
           <LineBreak space={2} />
 
           <View
             style={{
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              borderTopColor: AppColors.LIGHTGRAY,
-              borderBottomColor: AppColors.LIGHTGRAY,
               paddingVertical: responsiveHeight(2),
             }}>
-            <AppText
-              title={title ? title : 'Sure you want to delete this mood dairy?'}
-              textColor={AppColors.GRAY}
-              textSize={2}
-              textAlignment={'center'}
-            />
-            <LineBreak space={1} />
-            <AppText
-              title={subTitle ? subTitle : 'This action cannot be undone.'}
-              textColor={AppColors.GRAY}
-              textSize={1.5}
-              textAlignment={'center'}
+            <FlatList
+              data={data}
+              ItemSeparatorComponent={<LineBreak space={1} />}
+              renderItem={({item}) => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center',
+                    }}>
+                    <TouchableOpacity>
+                      <MaterialIcons
+                        name={
+                          item.id == 1 ? 'radio-button-on' : 'radio-button-off'
+                        }
+                        size={responsiveFontSize(2.5)}
+                        color={AppColors.PRIMARY}
+                      />
+                    </TouchableOpacity>
+                    <AppText
+                      title={item.title}
+                      textColor={AppColors.BLACK}
+                      textSize={2}
+                      textFontWeight
+                    />
+                  </View>
+                );
+              }}
             />
           </View>
           <LineBreak space={3} />
@@ -72,14 +96,14 @@ const DeleteMoodDairy = ({
               handlePress={() => setModalVisible(false)}
               textSize={1.8}
               btnBackgroundColor={AppColors.LIGHTGRAY}
-              textColor={AppColors.GRAY}
+              textColor={AppColors.BLACK}
               textFontWeight={false}
               btnPadding={15}
               borderRadius={20}
               btnWidth={42}
             />
             <AppButton
-              title={'Yes, Delete'}
+              title={'OK'}
               handlePress={() => setModalVisible(false)}
               textSize={1.8}
               btnBackgroundColor={AppColors.PRIMARY}
@@ -95,7 +119,7 @@ const DeleteMoodDairy = ({
   );
 };
 
-export default DeleteMoodDairy;
+export default ChooseThemeModal;
 
 const styles = StyleSheet.create({
   container: {
@@ -120,6 +144,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingHorizontal: responsiveWidth(5),
     width: responsiveWidth(100),
-    height: responsiveHeight(30),
+    height: responsiveHeight(33),
   },
 });

@@ -1,23 +1,26 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/self-closing-comp */
 import React from 'react';
-import {View, Modal, StyleSheet} from 'react-native';
+import {View, Modal, StyleSheet, TouchableOpacity} from 'react-native';
 import AppColors from '../utils/AppColors';
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from '../utils/Responsive_Dimensions';
 import AppText from './AppTextComps/AppText';
 import LineBreak from './LineBreak';
 import AppButton from './AppButton';
+import AppTextInput from './AppTextInput';
+import Feather from 'react-native-vector-icons/Feather';
 
-const DeleteMoodDairy = ({
-  modalVisible,
-  setModalVisible,
-  heading,
-  title,
-  subTitle,
-}: any) => {
+type Props = {
+  modalVisible: boolean;
+  details?: boolean;
+  setModalVisible: Function;
+  handleAdd?: any;
+};
+
+const EditGroupModal = ({modalVisible, setModalVisible, details, handleAdd}: Props) => {
   return (
     <Modal
       animationType="slide"
@@ -25,41 +28,53 @@ const DeleteMoodDairy = ({
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
       <View style={styles.modalBackground}>
-        <View style={styles.modalView}>
+        <View style={[styles.modalView, {height: responsiveHeight(42)}]}>
           <AppText
-            title={heading ? heading : 'delete mood dairy'}
-            textColor={'red'}
+            title={details ? 'Add new activity' : 'Edit Group'}
+            textColor={AppColors.BLACK}
             textFontWeight
             textSize={2.5}
+            textwidth={100}
+            textTransform={details ? 'uppercase' : 'normal'}
             textAlignment={'center'}
-            textTransform={heading ? 'normal' : 'uppercase'}
           />
 
+          {details && <LineBreak space={2} />}
+          {details && (
+            <View
+              style={{
+                alignItems: 'center',
+              }}>
+              <TouchableOpacity onPress={handleAdd}>
+                <Feather
+                  name={'plus-circle'}
+                  size={responsiveFontSize(10)}
+                  color={AppColors.PRIMARY}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
           <LineBreak space={2} />
 
           <View
             style={{
-              borderTopWidth: 1,
-              borderBottomWidth: 1,
-              borderTopColor: AppColors.LIGHTGRAY,
-              borderBottomColor: AppColors.LIGHTGRAY,
-              paddingVertical: responsiveHeight(2),
+              paddingVertical: responsiveHeight(1),
             }}>
             <AppText
-              title={title ? title : 'Sure you want to delete this mood dairy?'}
-              textColor={AppColors.GRAY}
-              textSize={2}
-              textAlignment={'center'}
+              title={details ? 'Activity Name' : 'Group Name'}
+              textColor={AppColors.BLACK}
+              textSize={1.8}
+              textFontWeight
             />
-            <LineBreak space={1} />
-            <AppText
-              title={subTitle ? subTitle : 'This action cannot be undone.'}
-              textColor={AppColors.GRAY}
-              textSize={1.5}
-              textAlignment={'center'}
+            <LineBreak space={0.5} />
+            <AppTextInput
+              inputPlaceHolder={'Enter name'}
+              containerBg={AppColors.LIGHTGRAY}
+              placeholderTextColor={AppColors.BLACK}
+              borderRadius={20}
             />
           </View>
-          <LineBreak space={3} />
+          <LineBreak space={2} />
 
           <View
             style={{
@@ -68,18 +83,18 @@ const DeleteMoodDairy = ({
               alignItems: 'center',
             }}>
             <AppButton
-              title={'Cancel'}
+              title={'cancel'}
               handlePress={() => setModalVisible(false)}
               textSize={1.8}
               btnBackgroundColor={AppColors.LIGHTGRAY}
-              textColor={AppColors.GRAY}
+              textColor={AppColors.BLACK}
               textFontWeight={false}
               btnPadding={15}
               borderRadius={20}
               btnWidth={42}
             />
             <AppButton
-              title={'Yes, Delete'}
+              title={'save'}
               handlePress={() => setModalVisible(false)}
               textSize={1.8}
               btnBackgroundColor={AppColors.PRIMARY}
@@ -95,7 +110,7 @@ const DeleteMoodDairy = ({
   );
 };
 
-export default DeleteMoodDairy;
+export default EditGroupModal;
 
 const styles = StyleSheet.create({
   container: {

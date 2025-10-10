@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
 import AppColors from '../../utils/AppColors';
 import AppHeader from '../../components/AppHeader';
@@ -8,10 +7,50 @@ import {responsiveWidth} from '../../utils/Responsive_Dimensions';
 import AppText from '../../components/AppTextComps/AppText';
 import {OtpInput} from 'react-native-otp-entry';
 import AppButton from '../../components/AppButton';
-import { useCustomNavigation } from '../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../utils/Hooks';
+import {useVerifyOTPMutation} from '../../redux/service';
 
-const OtpVerification = () => {
-    const {navigateToRoute} = useCustomNavigation();
+const OtpVerification = ({route}) => {
+  const {navigateToRoute} = useCustomNavigation();
+  const [OTPCode, setOTPCode] = useState('');
+  const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
+
+  const {type, info} = route?.params;
+  // console.log(OTPCode);
+
+  const startTimer = () => {};
+
+  const onResendCode = () => {};
+
+  const onOTPVerify = async () => {
+    if (!OTPCode) {
+      ShowToast('Please enter your verification code');
+      return;
+    }
+    let data = {
+      Otp: OTPCode,
+      ...(type === 'Forget'
+        ? {email: info?.email}
+        : {addSignUpToken: info?.addSignUpToken}),
+    };
+    await verifyOTP(data)
+      .unwrap()
+      .then(res => {
+        console.log('response of otp verification ===>',res)
+        ShowToast(res.message)
+        if (res.success) {
+          if (type === 'Forget') {
+            navigateToRoute('SecureYourAccount', {type, email: info?.email});
+          } else {
+            navigateToRoute('YourName');
+          }
+        }
+      })
+      .catch(error => {
+        console.log('error verifying the otp ===>', error);
+        ShowToast('Some problem occured');
+      });
+  };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -46,7 +85,7 @@ const OtpVerification = () => {
                 numberOfDigits={4}
                 type="numeric"
                 focusColor={AppColors.PRIMARY}
-                onFilled={text => console.log(`OTP is ${text}`)}
+                onFilled={text => setOTPCode(text)}
                 onTextChange={text => console.log(text)}
                 theme={{
                   pinCodeContainerStyle: {
@@ -54,7 +93,9 @@ const OtpVerification = () => {
                     borderRadius: 15,
                     width: responsiveWidth(19.5),
                   },
-                  filledPinCodeContainerStyle: {backgroundColor: AppColors.LIGHTGRAY},
+                  filledPinCodeContainerStyle: {
+                    backgroundColor: AppColors.LIGHTGRAY,
+                  },
                   pinCodeTextStyle: {color: AppColors.BLACK},
                 }}
               />
@@ -78,13 +119,14 @@ const OtpVerification = () => {
             <LineBreak space={5} />
 
             <AppButton
-                title={'Verify OTP'}
-                handlePress={() => navigateToRoute('SecureYourAccount')}
-                textSize={1.8}
-                btnBackgroundColor={AppColors.PRIMARY}
-                btnPadding={18}
-                btnWidth={90}
-              />
+              title={'Verify OTP'}
+              handlePress={() => onOTPVerify()}
+              textSize={1.8}
+              indicator={isLoading}
+              btnBackgroundColor={AppColors.PRIMARY}
+              btnPadding={18}
+              btnWidth={90}
+            />
           </View>
         </View>
       </View>

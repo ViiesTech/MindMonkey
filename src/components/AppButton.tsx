@@ -1,9 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import AppColors from '../utils/AppColors';
 import AppText from './AppTextComps/AppText';
-import {responsiveWidth} from '../utils/Responsive_Dimensions';
+import { responsiveWidth } from '../utils/Responsive_Dimensions';
+import Loader from './Loader';
 
 type props = {
   title?: any;
@@ -18,7 +19,8 @@ type props = {
   borderColor?: any;
   borderRadius?: any;
   leftIcon?: any;
-  activeOpacity?:any;
+  activeOpacity?: any;
+  indicator?: any;
 };
 const AppButton = ({
   title,
@@ -34,6 +36,7 @@ const AppButton = ({
   textFontWeight = true,
   textSize = 2.5,
   activeOpacity,
+  indicator
 }: props) => {
   return (
     <TouchableOpacity
@@ -52,13 +55,19 @@ const AppButton = ({
         borderColor: borderColor ? borderColor : null,
         flexDirection: 'row',
       }}>
-      {leftIcon}
-      <AppText
-        textColor={textColor}
-        textSize={textSize}
-        title={title}
-        textFontWeight={textFontWeight}
-      />
+      {indicator ?
+          <Loader />
+        :
+        <>
+          {leftIcon}
+          <AppText
+            textColor={textColor}
+            textSize={textSize}
+            title={title}
+            textFontWeight={textFontWeight}
+          />
+        </>
+      }
     </TouchableOpacity>
   );
 };

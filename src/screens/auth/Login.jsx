@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import AppColors from '../../utils/AppColors';
@@ -16,7 +15,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppIcons from '../../assets/icons/AppIcons';
 import SVGXml from '../../components/SVGXML';
 import AppButton from '../../components/AppButton';
-import {useCustomNavigation} from '../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../utils/Hooks';
+import {useLoginMutation} from '../../redux/service';
 
 const socialIcons = [
   {
@@ -40,7 +40,37 @@ const socialIcons = [
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const {navigateToRoute} = useCustomNavigation();
+  const [login, {isLoading}] = useLoginMutation();
+
+  const loginPress = async () => {
+    if (!email) {
+      ShowToast('Please enter your email');
+      return;
+    }
+    if (!password) {
+      ShowToast('Please enter your password');
+      return;
+    }
+
+    let data = {
+      email,
+      password,
+    };
+
+    await login(data)
+      .unwrap()
+      .then(res => {
+        console.log('login response ===>', res);
+        ShowToast(res.message);
+      })
+      .catch(error => {
+        console.log('error while login ===>', error);
+        ShowToast('Some problem occured');
+      });
+  };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -79,6 +109,8 @@ const Login = () => {
               <LineBreak space={0.5} />
               <AppTextInput
                 inputPlaceHolder={'Email'}
+                value={email}
+                onChangeText={text => setEmail(text)}
                 logo={
                   <MaterialIcons
                     name={'email'}
@@ -100,6 +132,8 @@ const Login = () => {
               <LineBreak space={0.5} />
               <AppTextInput
                 inputPlaceHolder={'Password'}
+                value={password}
+                onChangeText={text => setPassword(text)}
                 logo={
                   <MaterialIcons
                     name={'lock'}
@@ -241,8 +275,9 @@ const Login = () => {
 
             <AppButton
               title={'Sign In'}
-              handlePress={() => navigateToRoute('Main')}
+              handlePress={() => loginPress()}
               textSize={1.8}
+              indicator={isLoading}
               btnBackgroundColor={AppColors.PRIMARY}
               btnPadding={18}
               btnWidth={90}

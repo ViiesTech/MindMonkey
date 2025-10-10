@@ -96,7 +96,7 @@ const AppTextInput = ({
           lineHeight: responsiveHeight(lineHeight),
           width: responsiveWidth(inputWidth),
           color: AppColors.BLACK,
-          height: inputHeight ? responsiveHeight(inputHeight) : null,
+          height: inputHeight ? responsiveHeight(inputHeight) : responsiveHeight(5),
           fontWeight: placeholderTextfontWeight
             ? placeholderTextfontWeight
             : null,

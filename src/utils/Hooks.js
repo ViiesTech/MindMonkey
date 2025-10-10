@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 export const useCustomNavigation = () => {
   const navigation = useNavigation();
 
-  const navigateToRoute = (routeName: any, params: object) => {
+  const navigateToRoute = (routeName, params) => {
     navigation.navigate(routeName, params);
   };
 
@@ -17,3 +18,10 @@ export const useCustomNavigation = () => {
     navigation,
   };
 };
+
+export const ShowToast = (message) => {
+    return Toast.show({
+        type: 'success',
+        text1: message
+    })
+}

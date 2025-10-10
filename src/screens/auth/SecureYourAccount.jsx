@@ -14,12 +14,59 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AppTextInput from '../../components/AppTextInput';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AppButton from '../../components/AppButton';
-import {useCustomNavigation} from '../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../utils/Hooks';
+import { usePasswordUpdateMutation } from '../../redux/service';
 
-const SecureYourAccount = () => {
+const SecureYourAccount = ({route}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [cPassword, setCPassword] = useState('');
   const {navigateToRoute} = useCustomNavigation();
+  const [passwordUpdate,{isLoading}] = usePasswordUpdateMutation()
+
+  const {type, email} = route?.params;
+
+  // console.log('type,email',type,email)
+
+  const onSaveNewPassword = async () => {
+    if(!newPassword) {
+      ShowToast('Please enter your new password')
+      return
+    }
+
+    if(newPassword.length < 8) {
+      ShowToast('Password is too short')
+      return
+    } 
+
+    if(!cPassword) {
+      ShowToast('Please re-type your password to confirm')
+      return
+    }
+    
+    if(cPassword !== newPassword) {
+      ShowToast(`Password doesn't match`)
+      return
+    }
+
+    let data = {
+      email,
+      newPassword,
+      type,
+    }
+
+    await passwordUpdate(data).unwrap().then((res) => {
+      console.log('response of password update ===>',res)
+      ShowToast(res.message)
+      if(res.success) {
+        navigateToRoute('AllSet',{type});
+      }
+    }).catch((error) => {
+      console.log('error of password modification ===>',error)
+      ShowToast('Some problem occured')
+    })
+  };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -57,6 +104,8 @@ const SecureYourAccount = () => {
             />
             <LineBreak space={0.5} />
             <AppTextInput
+              value={newPassword}
+              onChangeText={text => setNewPassword(text)}
               inputPlaceHolder={'Password'}
               logo={
                 <MaterialIcons
@@ -91,6 +140,8 @@ const SecureYourAccount = () => {
             <LineBreak space={0.5} />
             <AppTextInput
               inputPlaceHolder={'Password'}
+              value={cPassword}
+              onChangeText={text => setCPassword(text)}
               logo={
                 <MaterialIcons
                   name={'lock'}
@@ -119,8 +170,9 @@ const SecureYourAccount = () => {
           <View>
             <AppButton
               title={'Save New Password'}
-              handlePress={() => navigateToRoute('AllSet')}
+              handlePress={() => onSaveNewPassword()}
               textSize={1.8}
+              indicator={isLoading}
               btnBackgroundColor={AppColors.PRIMARY}
               btnPadding={18}
               btnWidth={90}

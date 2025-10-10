@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView} from 'react-native';
 import AppColors from '../../utils/AppColors';
 import LineBreak from '../../components/LineBreak';
@@ -11,11 +10,37 @@ import {
 import AppText from '../../components/AppTextComps/AppText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AppTextInput from '../../components/AppTextInput';
-import {useCustomNavigation} from '../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../utils/Hooks';
 import AppButton from '../../components/AppButton';
+import {useForgetPasswordMutation} from '../../redux/service';
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState('');
   const {navigateToRoute} = useCustomNavigation();
+  const [forgetPassword, {isLoading}] = useForgetPasswordMutation();
+
+  const onForgetEmail = async () => {
+    if (!email) {
+      ShowToast('Please enter your email');
+      return;
+    }
+    let data = {
+      email,
+    };
+    await forgetPassword(data)
+      .unwrap()
+      .then(res => {
+        console.log('success on the verification of email ===>', res);
+        ShowToast(res.message);
+        if (res.success) {
+          navigateToRoute('OtpVerification', {type: 'Forget', info: res.data});
+        }
+      })
+      .catch(error => {
+        console.log('error while verifying the email ===>', error);
+        ShowToast('Some problem occured');
+      });
+  };
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -56,6 +81,8 @@ const ForgotPassword = () => {
               <LineBreak space={0.5} />
               <AppTextInput
                 inputPlaceHolder={'andrew.ainsley@yourdomain.com'}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
                 logo={
                   <MaterialIcons
                     name={'email'}
@@ -70,8 +97,9 @@ const ForgotPassword = () => {
             <View style={{flex: 1, justifyContent: 'flex-end'}}>
               <AppButton
                 title={'Send Otp Code'}
-                handlePress={() => navigateToRoute('OtpVerification')}
+                handlePress={() => onForgetEmail()}
                 textSize={1.8}
+                indicator={isLoading}
                 btnBackgroundColor={AppColors.PRIMARY}
                 btnPadding={18}
                 btnWidth={90}

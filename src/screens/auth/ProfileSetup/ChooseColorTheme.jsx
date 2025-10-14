@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import {useCustomNavigation} from '../../../utils/Hooks';
@@ -13,7 +12,7 @@ import {
 } from '../../../utils/Responsive_Dimensions';
 import AppButton from '../../../components/AppButton';
 
-const emojiThemes = [['😡', '😟', '😐', '🙂', '😄']];
+// const emojiThemes = [['😡', '😟', '😐', '🙂', '😄']];
 const colorTheme = [
   {
     id: 1,
@@ -41,9 +40,12 @@ const colorTheme = [
   },
 ];
 
-const ChooseColorTheme = () => {
+const ChooseColorTheme = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
-  const [selectedTheme, setSelectedTheme] = useState({id: 1});
+  const [selectedColor, setSelectedColor] = useState({id: 0});
+  const {selectedTheme} = route?.params;
+
+  // console.log('selectedTheme ===>',selectedTheme)
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -72,7 +74,7 @@ const ChooseColorTheme = () => {
       />
 
       <View>
-        <EmojiThemePicker emojiThemes={emojiThemes} />
+        <EmojiThemePicker emojiThemes={[selectedTheme?.face]} />
       </View>
 
       <View style={{flex: 1}}>
@@ -80,22 +82,22 @@ const ChooseColorTheme = () => {
           data={colorTheme}
           ItemSeparatorComponent={<LineBreak space={2} />}
           contentContainerStyle={{paddingHorizontal: responsiveWidth(6)}}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return (
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  borderWidth: selectedTheme.id == item.id ? 3 : 1,
+                  borderWidth: selectedColor.id == index ? 3 : 1,
                   borderColor:
-                    selectedTheme.id == item.id
+                    selectedColor.id == index
                       ? AppColors.PRIMARY
                       : AppColors.LIGHTGRAY,
                   paddingHorizontal: responsiveWidth(5),
                   paddingVertical: responsiveHeight(2),
                   borderRadius: 5,
                 }}
-                onPress={() => setSelectedTheme({id: item.id})}>
+                onPress={() => setSelectedColor({id: index})}>
                 <View
                   style={{
                     backgroundColor: item.color,
@@ -144,7 +146,12 @@ const ChooseColorTheme = () => {
       <View style={{flex: 1, alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('YourRecord')}
+          handlePress={() =>
+            navigateToRoute('YourRecord', {
+              ...route?.params,
+              selectedColorPalette: selectedColor.id,
+            })
+          }
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

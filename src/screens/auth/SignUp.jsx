@@ -85,7 +85,8 @@ const SignUp = () => {
         ShowToast(res.message);
         if (res.success) {
           navigateToRoute('OtpVerification', {
-            signupData: {type: 'create', info: res.data},
+            type: 'Create',
+            info: {...res.data, password,addSignUpToken: res.accessToken},
           });
         }
       })

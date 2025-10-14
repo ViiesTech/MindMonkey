@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import {useCustomNavigation} from '../../../utils/Hooks';
@@ -9,8 +9,11 @@ import LineBreak from '../../../components/LineBreak';
 import AppText from '../../../components/AppTextComps/AppText';
 import AgePicker from '../../../components/AgePicker';
 
-const YourAge = () => {
+const YourAge = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
+  const [ageYears, setAgeYears] = useState(27);
+
+  console.log('age years ===>', ageYears);
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -38,13 +41,21 @@ const YourAge = () => {
 
         <LineBreak space={10} />
 
-        <AgePicker />
+        <AgePicker
+          selectedAge={ageYears}
+          setSelectedAge={age => setAgeYears(age)}
+        />
       </View>
       <View
         style={{flex: 0.7, justifyContent: 'flex-end', alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('SetEmojiTheme')}
+          handlePress={() =>
+            navigateToRoute('SetEmojiTheme', {
+              ...route?.params?.profileData,
+              ageYears,
+            })
+          }
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

@@ -1,53 +1,48 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, FlatList, StyleSheet, Dimensions} from 'react-native';
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from '../utils/Responsive_Dimensions';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { responsiveHeight, responsiveWidth } from '../utils/Responsive_Dimensions';
 import AppText from './AppTextComps/AppText';
 import AppColors from '../utils/AppColors';
 
-const {height} = Dimensions.get('window');
-const ITEM_HEIGHT = 50; // Adjust for spacing
+const { height } = Dimensions.get('window');
+const ITEM_HEIGHT = responsiveHeight(5.5);
+
 const TimePicker = () => {
-  const flatListRef = useRef(null);
-  const [selectedTimeOne, setSelectedTimeOne] = useState(27);
-  const [selectedTimeTwo, setSelectedTimeTwo] = useState(27);
+  const hoursRef = useRef(null);
+  const minutesRef = useRef(null);
+  const [selectedHour, setSelectedHour] = useState(10);
+  const [selectedMinute, setSelectedMinute] = useState('25');
+  const [amPm, setAmPm] = useState('AM');
 
-  const data = Array.from({length: 100}, (_, i) => i + 1);
+  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+  const minutes = Array.from({ length: 60 }, (_, i) =>
+    i.toString().padStart(2, '0')
+  );
+  const amPmOptions = ['AM', 'PM'];
 
-  const handleScroll = (event: any) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const index = Math.round(offsetY / ITEM_HEIGHT - 4);
-    setSelectedTimeOne(data[index]);
-  };
-
-  const handleScrollTwo = (event: any) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const index = Math.round(offsetY / ITEM_HEIGHT - 4);
-    setSelectedTimeTwo(data[index]);
-  };
-
+  // Scroll to default positions
   useEffect(() => {
-    // Scroll to default selectedAge
-    const index = data.indexOf(selectedTimeOne);
-    flatListRef.current?.scrollToOffset({
+    scrollToInitial(hoursRef, hours.indexOf(selectedHour));
+    scrollToInitial(minutesRef, parseInt(selectedMinute, 10));
+  }, []);
+
+  const scrollToInitial = (ref: any, index: number) => {
+    ref.current?.scrollToOffset({
       offset: index * ITEM_HEIGHT,
       animated: false,
     });
-  }, []);
+  };
 
-  useEffect(() => {
-    // Scroll to default selectedAge
-    const index = data.indexOf(selectedTimeTwo);
-    flatListRef.current?.scrollToOffset({
-      offset: index * ITEM_HEIGHT,
-      animated: false,
-    });
-  }, []);
+  const onScrollEnd = (event: any, data: any, setValue: any) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const index = Math.round(offsetY / ITEM_HEIGHT);
+    if (index >= 0 && index < data.length) {
+      setValue(data[index]);
+    }
+  };
 
-  const renderItem = ({item}: any) => {
-    const isSelected = item === selectedTimeOne;
+  const renderItem = (item: any, selected: any) => {
+    const isSelected = item === selected;
     return (
       <View style={styles.item}>
         <Text style={[styles.text, isSelected && styles.selectedText]}>
@@ -57,65 +52,70 @@ const TimePicker = () => {
     );
   };
 
-  const renderItemTwo = ({item}: any) => {
-    const isSelected = item === selectedTimeTwo;
-    return (
-      <View style={styles.item}>
-        <Text style={[styles.text, isSelected && styles.selectedText]}>
-          {item}
-        </Text>
-      </View>
-    );
-  };
+  const formattedTime = `${selectedHour}:${selectedMinute} ${amPm}`;
 
   return (
-    <View style={styles.container}>
-      <View>
+    <View style={styles.mainContainer}>
+      <View style={styles.container}>
+        {/* Hours */}
         <FlatList
-          ref={flatListRef}
-          data={data}
-          keyExtractor={item => item.toString()}
-          renderItem={renderItem}
+          ref={hoursRef}
+          data={hours}
+          keyExtractor={(item) => item.toString()}
+          renderItem={({ item }) => renderItem(item, selectedHour)}
           showsVerticalScrollIndicator={false}
           snapToInterval={ITEM_HEIGHT}
           decelerationRate="fast"
-          onMomentumScrollEnd={handleScroll}
+          onMomentumScrollEnd={(e) => onScrollEnd(e, hours, setSelectedHour)}
           contentContainerStyle={{
-            paddingVertical: height / 2 - ITEM_HEIGHT * 1.5, // centers item
+            paddingVertical: (responsiveHeight(40) / 2) - ITEM_HEIGHT * 1.5,
           }}
         />
-        <View style={styles.overlay}>
-          <Text style={styles.overlayText}>{selectedTimeOne}</Text>
-        </View>
-      </View>
-      <View style={{position: 'relative', bottom: responsiveHeight(1)}}>
-      <AppText
-        title={':'}
-        textSize={3}
-        textColor={AppColors.PRIMARY}
-        textFontWeight
+
+        <AppText
+          title=":"
+          textSize={3.5}
+          textColor={AppColors.PRIMARY}
+          textFontWeight
+          style={{ marginHorizontal: responsiveWidth(2) }}
         />
-        </View>
-      <View>
+
+        {/* Minutes */}
         <FlatList
-          ref={flatListRef}
-          data={data}
-          keyExtractor={item => item.toString()}
-          renderItem={renderItemTwo}
+          ref={minutesRef}
+          data={minutes}
+          keyExtractor={(item) => item.toString()}
+          renderItem={({ item }) => renderItem(item, selectedMinute)}
           showsVerticalScrollIndicator={false}
           snapToInterval={ITEM_HEIGHT}
           decelerationRate="fast"
-          onMomentumScrollEnd={handleScrollTwo}
+          onMomentumScrollEnd={(e) => onScrollEnd(e, minutes, setSelectedMinute)}
           contentContainerStyle={{
-            paddingVertical: height / 2 - ITEM_HEIGHT * 1.5, // centers item
+            paddingVertical: (responsiveHeight(40) / 2) - ITEM_HEIGHT * 1.5,
           }}
         />
-        <View style={[styles.overlay]}>
-          <Text style={styles.overlayText}>
-            {selectedTimeTwo} <Text style={styles.years}>PM</Text>
-          </Text>
+
+        {/* AM/PM Toggle */}
+        <View style={{ marginLeft: responsiveWidth(2) }}>
+          {amPmOptions.map((opt) => (
+            <Text
+              key={opt}
+              style={[
+                styles.amPmText,
+                amPm === opt && styles.selectedAmPmText,
+              ]}
+              onPress={() => setAmPm(opt)}>
+              {opt}
+            </Text>
+          ))}
         </View>
+
+        {/* Highlight overlay */}
+        <View style={styles.overlay} pointerEvents="none" />
       </View>
+
+      {/* Display formatted time */}
+      <Text style={styles.finalTime}>{formattedTime}</Text>
     </View>
   );
 };
@@ -123,12 +123,16 @@ const TimePicker = () => {
 export default TimePicker;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
   container: {
     height: responsiveHeight(40),
-    paddingHorizontal: responsiveWidth(25),
-    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   item: {
     height: ITEM_HEIGHT,
@@ -136,36 +140,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#000',
+    fontSize: responsiveHeight(2.4),
+    fontWeight: '500',
+    color: '#999',
   },
   selectedText: {
-    color: '#42C6FF',
-    fontSize: 26,
+    color: AppColors.PRIMARY,
+    fontSize: responsiveHeight(3),
+    fontWeight: '700',
   },
   overlay: {
     position: 'absolute',
-    top: 125,
-    width: 120,
+    top: '50%',
+    transform: [{ translateY: -ITEM_HEIGHT / 2 }],
     height: ITEM_HEIGHT,
-    borderRadius: 50,
+    width: '70%',
+    borderRadius: 20,
+    backgroundColor: '#E6F7FF',
     borderWidth: 1,
-    borderColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    zIndex: 10,
+    borderColor: AppColors.PRIMARY,
+    opacity: 0.3,
   },
-  overlayText: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#42C6FF',
+  amPmText: {
+    fontSize: responsiveHeight(2.4),
+    color: '#999',
+    textAlign: 'center',
+    marginVertical: responsiveHeight(0.5),
   },
-  years: {
-    fontSize: 14,
-    color: '#aaa',
-    fontWeight: 'normal',
+  selectedAmPmText: {
+    color: AppColors.PRIMARY,
+    fontWeight: '700',
+  },
+  finalTime: {
+    marginTop: responsiveHeight(2),
+    fontSize: responsiveHeight(3),
+    fontWeight: '700',
+    color: AppColors.PRIMARY,
   },
 });

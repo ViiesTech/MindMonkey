@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
@@ -24,8 +23,14 @@ const data = [['😡', '😟', '😐', '🙂', '😄']];
 
 const SetEmojiTheme = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
-  const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
+  const [selectedTheme, setSelectedTheme] = useState({
+    face: ['😡', '😟', '😐', '🙂', '😄'],
+    id: 0,
+  });
   const edit = route?.params?.edit;
+
+  console.log('selected theme', selectedTheme);
+  // console.log(route?.params)
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -75,17 +80,20 @@ const SetEmojiTheme = ({route}) => {
       <ScrollView>
         <EmojiThemePicker
           emojiThemes={emojiThemes}
-          selectedThemeIndex={selectedThemeIndex}
-          setSelectedThemeIndex={setSelectedThemeIndex}
+          selectedThemeIndex={selectedTheme}
+          setSelectedThemeIndex={setSelectedTheme}
         />
         <View style={{alignItems: 'center'}}>
           <AppButton
             title={edit ? 'save' : 'Continue'}
             handlePress={() => {
-              if(edit){
+              if (edit) {
                 navigateToRoute('Main');
-              }else {
-                navigateToRoute('ChooseColorTheme');
+              } else {
+                navigateToRoute('ChooseColorTheme', {
+                  ...route?.params,
+                  selectedTheme,
+                });
               }
             }}
             textSize={1.8}

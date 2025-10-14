@@ -22,6 +22,8 @@ const EmojiThemePicker = ({
   isEdit = false,
   handleOnEdit,
 }: any) => {
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {emojiThemes?.map((theme, index) => (
@@ -30,9 +32,9 @@ const EmojiThemePicker = ({
           style={[
             styles.emojiRow,
             {position: 'relative'},
-            selectedThemeIndex === index && styles.selectedRow,
+            selectedThemeIndex?.id === index && styles.selectedRow,
           ]}
-          onPress={() => setSelectedThemeIndex && setSelectedThemeIndex(index)}>
+          onPress={() => setSelectedThemeIndex && setSelectedThemeIndex({face: theme,id:index})}>
           {theme?.map((emoji: any, emojiIndex: any) => (
             <Text key={emojiIndex} style={styles.emoji}>
               {emoji}

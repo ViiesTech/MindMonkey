@@ -1,9 +1,8 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {FlatList, ScrollView, TouchableOpacity, View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
-import {useCustomNavigation} from '../../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../../utils/Hooks';
 import LineBreak from '../../../components/LineBreak';
 import AppText from '../../../components/AppTextComps/AppText';
 import Feather from 'react-native-vector-icons/Feather';
@@ -77,10 +76,12 @@ const data = [
   },
 ];
 
-const YourRecord = () => {
+const YourRecord = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
 
   const [selectedIds, setSelectedIds] = useState([]);
+
+  // console.log(selectedIds)
 
   const toggleSelect = id => {
     setSelectedIds(prev =>
@@ -176,7 +177,17 @@ const YourRecord = () => {
         <View>
           <AppButton
             title={'Continue'}
-            handlePress={() => navigateToRoute('DailyReminder')}
+            handlePress={() => {
+              if (selectedIds.length < 1) {
+                ShowToast('Please choose any activity first');
+                return;
+              } else {
+                navigateToRoute('DailyReminder', {
+                  ...route?.params,
+                  activities: selectedIds,
+                });
+              }
+            }}
             textSize={1.8}
             btnBackgroundColor={AppColors.PRIMARY}
             btnPadding={18}

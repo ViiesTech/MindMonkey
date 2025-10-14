@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useState } from 'react';
 import {View} from 'react-native';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
 import {useCustomNavigation} from '../../../utils/Hooks';
@@ -11,6 +11,7 @@ import AppButton from '../../../components/AppButton';
 
 const YourName = () => {
   const {goBack, navigateToRoute} = useCustomNavigation();
+  const [name,setName] = useState('')
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -46,13 +47,15 @@ const YourName = () => {
           inputTextAlign={'center'}
           inputHeight={7}
           fontSize={3}
+          value={name}
+          onChangeText={(text) => setName(text)}
         />
       </View>
 
       <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('YourGender')}
+          handlePress={() => navigateToRoute('YourGender',{name})}
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

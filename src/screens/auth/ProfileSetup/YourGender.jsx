@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useState } from 'react';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import {useCustomNavigation} from '../../../utils/Hooks';
@@ -12,14 +11,17 @@ import {
   responsiveWidth,
 } from '../../../utils/Responsive_Dimensions';
 
-const gender = [
+const genderr = [
   {id: 1, text: 'Male', color: AppColors.PRIMARY},
   {id: 2, text: 'FeMale', color: AppColors.BTNCOLOURS},
   {id: 3, text: 'PREFER NOT TO SAY', color: AppColors.LIGHTGRAY},
 ];
 
-const YourGender = () => {
+const YourGender = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
+  const [gender,setGender] = useState('Male')
+  const {name} = route?.params
+  // console.log('name',name)
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
       <CustomHeaderProgress
@@ -48,7 +50,7 @@ const YourGender = () => {
         <LineBreak space={10} />
 
         <FlatList
-          data={gender}
+          data={genderr}
           horizontal
           contentContainerStyle={{
             paddingHorizontal: responsiveWidth(6),
@@ -57,13 +59,15 @@ const YourGender = () => {
           }}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity style={{alignItems: 'center'}}>
+              <TouchableOpacity onPress={() => setGender(item.text)} style={{alignItems: 'center'}}>
                 <View
                   style={{
                     backgroundColor: item.color,
                     width: 90,
                     height: 90,
                     borderRadius: 100,
+                    borderWidth: gender == item.text ? 2 : 0,
+                    borderColor: gender == item.text ? AppColors.darkYellow : null
                   }}
                 />
                 <LineBreak space={1} />
@@ -80,7 +84,7 @@ const YourGender = () => {
           }}
         />
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             borderWidth: 1,
             borderColor: AppColors.GRAY,
@@ -96,13 +100,13 @@ const YourGender = () => {
             textColor={AppColors.GRAY}
             textSize={1.8}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View
         style={{flex: 0.7, justifyContent: 'flex-end', alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('YourAge')}
+          handlePress={() => navigateToRoute('YourAge',{profileData: {gender,name}})}
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

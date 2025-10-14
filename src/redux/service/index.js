@@ -54,15 +54,15 @@ export const Apis = createApi({
         };
       },
     }),
-    // createUpdateProfile: builder.mutation({
-    //   query: data => {
-    //     return {
-    //       url: endpoints.CREATE_UPDATE_PROFILE,
-    //       method: 'POST',
-    //       body: data,
-    //     };
-    //   },
-    // }),
+    createUpdateProfile: builder.mutation({
+      query: data => {
+        return {
+          url: endpoints.USER_PROFILE,
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
     // getProfile: builder.query({
     //   query: id => {
     //     //   console.log('typeeee',type)
@@ -80,7 +80,8 @@ export const {
   useLoginMutation,
   useForgetPasswordMutation,
   useVerifyOTPMutation,
-  usePasswordUpdateMutation
+  usePasswordUpdateMutation,
+  useCreateUpdateProfileMutation
   // useLazyGetProfileQuery,
 
 } = Apis;

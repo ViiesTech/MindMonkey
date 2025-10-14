@@ -9,8 +9,9 @@ import AppText from '../../../components/AppTextComps/AppText';
 import TimePicker from '../../../components/TimePicker';
 import AppButton from '../../../components/AppButton';
 
-const DailyReminder = () => {
+const DailyReminder = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
+  console.log('route',route?.params)
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>

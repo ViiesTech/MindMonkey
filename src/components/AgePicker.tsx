@@ -5,11 +5,13 @@ import {responsiveHeight} from '../utils/Responsive_Dimensions';
 const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = 50; // Adjust for spacing
 
-const AgePicker = () => {
+const AgePicker = ({selectedAge,setSelectedAge}) => {
   const flatListRef = useRef(null);
-  const [selectedAge, setSelectedAge] = useState(27);
+  // const [selectedAge, setSelectedAge] = useState(27);
 
   const data = Array.from({length: 100}, (_, i) => i + 1);
+
+  // console.log('age ===>',selectedAge)
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;

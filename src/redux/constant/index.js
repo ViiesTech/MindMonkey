@@ -7,5 +7,6 @@ export const endpoints = {
   VERIFY_EMAIL: 'sendOtp',
   PASSWORD_MODIFICATION: 'resetPassword',
   VERIFY_OTP: 'verifyOtp',
-  SIGNUP_GOOGLE: 'signUpOrLoginAdminByGoogle'
+  SIGNUP_GOOGLE: 'signUpOrLoginAdminByGoogle',
+  USER_PROFILE: 'updateUser'
 }

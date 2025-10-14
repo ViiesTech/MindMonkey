@@ -8,19 +8,73 @@ import AppText from '../../components/AppTextComps/AppText';
 import {OtpInput} from 'react-native-otp-entry';
 import AppButton from '../../components/AppButton';
 import {ShowToast, useCustomNavigation} from '../../utils/Hooks';
-import {useVerifyOTPMutation} from '../../redux/service';
+import {
+  useForgetPasswordMutation,
+  useRegisterMutation,
+  useVerifyOTPMutation,
+} from '../../redux/service';
 
 const OtpVerification = ({route}) => {
   const {navigateToRoute} = useCustomNavigation();
   const [OTPCode, setOTPCode] = useState('');
+  const [timer, setTimer] = useState(60);
   const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
+  const [forgetPassword] = useForgetPasswordMutation();
+  const [register] = useRegisterMutation();
 
   const {type, info} = route?.params;
-  // console.log(OTPCode);
+  console.log(type,info);
 
-  const startTimer = () => {};
+  const StartTimer = () => {
+    let interval = setInterval(() => {
+      setTimer(prevTimer => {
+        const timer = prevTimer > 0 && prevTimer - 1;
+        if (timer === 0) {
+          clearInterval(interval);
+          setTimer(60);
+        }
+        return timer;
+      });
+    }, 1000);
 
-  const onResendCode = () => {};
+    return () => clearInterval(interval);
+  };
+
+  const onResendCode = async () => {
+    StartTimer();
+    setOTPCode('');
+    let data = {
+      email: info?.email,
+      ...(type === 'Create' && {password: info?.password}),
+    };
+    if (type === 'Forget') {
+      await forgetPassword(data)
+        .unwrap()
+        .then(res => {
+          console.log('forget response =>', res.data);
+          ShowToast(res.message);
+          if (res.success) {
+          }
+        })
+        .catch(error => {
+          console.log('error while sending otp on email ===>', error);
+          ShowToast('Some problem occured');
+        });
+    } else {
+      await register(data)
+        .unwrap()
+        .then(res => {
+          console.log('signup response =>', res.data);
+          ShowToast(res.message);
+          if (res.success) {
+          }
+        })
+        .catch(error => {
+          console.log('error while sending otp on email ===>', error);
+          ShowToast('Some problem occured');
+        });
+    }
+  };
 
   const onOTPVerify = async () => {
     if (!OTPCode) {
@@ -36,8 +90,8 @@ const OtpVerification = ({route}) => {
     await verifyOTP(data)
       .unwrap()
       .then(res => {
-        console.log('response of otp verification ===>',res)
-        ShowToast(res.message)
+        console.log('response of otp verification ===>', res);
+        ShowToast(res.message);
         if (res.success) {
           if (type === 'Forget') {
             navigateToRoute('SecureYourAccount', {type, email: info?.email});
@@ -102,13 +156,15 @@ const OtpVerification = ({route}) => {
             </View>
             <LineBreak space={5} />
             <AppText
-              title={'Resend code in 53 seconds'}
+              title={`Resend code in ${timer} seconds`}
               textColor={AppColors.BLACK}
               textSize={2.1}
               textAlignment={'center'}
             />
             <LineBreak space={3} />
-            <TouchableOpacity>
+            <TouchableOpacity
+              disabled={timer < 60 && true}
+              onPress={onResendCode}>
               <AppText
                 title={'RESEND CODE'}
                 textColor={AppColors.PRIMARY}

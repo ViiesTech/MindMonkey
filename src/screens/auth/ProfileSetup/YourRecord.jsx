@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, ScrollView, TouchableOpacity, View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
@@ -12,6 +12,8 @@ import {
   responsiveWidth,
 } from '../../../utils/Responsive_Dimensions';
 import AppButton from '../../../components/AppButton';
+import { useLazyGetAllCategoriesQuery } from '../../../redux/service/adminApi';
+import Loader from '../../../components/Loader';
 
 const data = [
   {
@@ -78,10 +80,31 @@ const data = [
 
 const YourRecord = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
+  const [getAllCategories,{data,isLoading}] = useLazyGetAllCategoriesQuery()
+  const [activities,setActivities] = useState([])
 
   const [selectedIds, setSelectedIds] = useState([]);
 
-  // console.log(selectedIds)
+  console.log(selectedIds)
+
+    useEffect(() => {
+    if(data?.data.length > 0 ){  
+      const uniqueCategories = data?.data.filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex(
+            t => t.categoryId.categoryName === item.categoryId.categoryName,
+          ),
+      );
+      setActivities(uniqueCategories);
+      }
+    }, [data?.data]);
+    
+      useEffect(() => {
+    
+        getAllCategories()
+    
+      },[])
 
   const toggleSelect = id => {
     setSelectedIds(prev =>
@@ -106,8 +129,12 @@ const YourRecord = ({route}) => {
         textwidth={70}
         textAlignment={'center'}
         textTransform={'uppercase'}
-      />
+      /> 
       <LineBreak space={0.5} />
+      {isLoading ?
+              <Loader size={'large'} color={AppColors.PRIMARY} />
+          :
+          <>
       <AppText
         title={
           'Track activities that matter to you. Choose the types of activities you want to log'
@@ -121,16 +148,16 @@ const YourRecord = ({route}) => {
 
       <ScrollView style={{flex: 1, paddingHorizontal: responsiveWidth(6)}}>
         <FlatList
-          data={data}
-          keyExtractor={item => item.id.toString()}
+          data={activities}
+          keyExtractor={item => item._id.toString()}
           ItemSeparatorComponent={<LineBreak space={2} />}
           ListHeaderComponent={<LineBreak space={2} />}
           ListFooterComponent={<LineBreak space={2} />}
           renderItem={({item}) => {
-            const isSelected = selectedIds.includes(item.id);
+            const isSelected = selectedIds.includes(item.categoryId._id);
             return (
               <TouchableOpacity
-                onPress={() => toggleSelect(item.id)}
+                onPress={() => toggleSelect(item.categoryId._id)}
                 style={{
                   borderWidth: 4,
                   borderColor: isSelected
@@ -148,7 +175,7 @@ const YourRecord = ({route}) => {
                   }}>
                   <View>
                     <AppText
-                      title={item.title}
+                      title={item.categoryId.categoryName}
                       textColor={AppColors.BLACK}
                       textSize={1.5}
                       textTransform={'uppercase'}
@@ -156,7 +183,7 @@ const YourRecord = ({route}) => {
                     />
                     <LineBreak space={0.5} />
                     <AppText
-                      title={item.subTitle}
+                      title={item.subCategoryName}
                       textColor={AppColors.GRAY}
                       textSize={1.5}
                       numberOfLines={1}
@@ -196,6 +223,8 @@ const YourRecord = ({route}) => {
         </View>
         <LineBreak space={2} />
       </ScrollView>
+      </>
+      }
     </View>
   );
 };

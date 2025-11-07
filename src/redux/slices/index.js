@@ -23,7 +23,7 @@ export const Slice = createSlice({
       (state, action) => {
         if (action.payload?.data) {
           state.user = action.payload.data;
-          state.token = action.payload?.accessToken;
+          state.token = action.payload?.token;
         }
       },
     ),
@@ -32,22 +32,22 @@ export const Slice = createSlice({
         (state, action) => {
           if (action.payload?.data) {
             state.user = action.payload.data;
-            state.token = action.payload?.accessToken;
+            state.token = action.payload?.token;
           }
         },
-      )
-      // builder.addMatcher(
-      //   Apis.endpoints.createUpdateProfile.matchFulfilled,
-      //   (state, action) => {
-      //     // console.log('user data',state.user)
-      //     if (action.payload?.data) {
-      //       state.user = {
-      //         ...state.user,
-      //         ...action.payload.data,
-      //       };
-      //     }
-      //   },
-      // );
+      ),
+      builder.addMatcher(
+        Apis.endpoints.createUpdateProfile.matchFulfilled,
+        (state, action) => {
+          // console.log('user data',state.user)
+          if (action.payload?.data) {
+            state.user = {
+              ...state.user,
+              ...action.payload.data,
+            };
+          }
+        },
+      );
   },
 });
 

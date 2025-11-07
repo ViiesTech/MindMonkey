@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, FlatList, TouchableOpacity} from 'react-native';
 import LineBreak from '../../../components/LineBreak';
 import AppMainHeader from '../../../components/AppMainHeader';
@@ -19,6 +19,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import EditGroupModal from '../../../components/EditGroupModal';
 import CustomMenu from '../../../components/CustomMenu';
 import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
+import {useLazyGetAllCategoriesQuery} from '../../../redux/service/adminApi';
+import Loader from '../../../components/Loader';
 
 const data = [
   {
@@ -111,18 +113,36 @@ const data = [
   },
 ];
 
-const ManageActivitiesDetails = () => {
+const ManageActivitiesDetails = ({route}) => {
   const {navigateToRoute} = useCustomNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMenu, setModalMenu] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [getAllCategories, {data: categoriesData, isLoading}] =
+    useLazyGetAllCategoriesQuery();
+  const {id} = route?.params;
+
+  console.log('detail ===>', categoriesData);
+
+  useEffect(() => {
+    getAllCategories(id);
+  }, [id]);
 
   return (
     <View style={{flex: 1, paddingHorizontal: responsiveWidth(5)}}>
-      <AppMainHeader heading="work (8)" />
-      <LineBreak space={2} />
+      {isLoading ? (
+        <Loader style={{marginVertical: responsiveHeight(4)}} color={AppColors.PRIMARY} />
+      ) : (
+        <>
+          <AppMainHeader
+            heading={
+              categoriesData?.data[0]?.categoryId?.categoryName +
+              ` (${categoriesData?.data?.length}) `
+            }
+          />
+          <LineBreak space={2} />
 
-      <EditGroupModal
+          {/* <EditGroupModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         details={true}
@@ -151,47 +171,58 @@ const ManageActivitiesDetails = () => {
         heading="Delete activity overtime?"
         title="Sure yoy want to delete this group?"
         subTitle="delete group will remove all activites (8) within. This action cannot be undone."
-      />
+      /> */}
 
-      <FlatList
-        data={data}
-        ItemSeparatorComponent={<LineBreak space={2} />}
-        contentContainerStyle={{
-          backgroundColor: AppColors.WHITE,
-          paddingHorizontal: responsiveWidth(5),
-          paddingVertical: responsiveHeight(4),
-          borderRadius: 20,
-        }}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-                  {item.icon}
-                  <AppText
-                    title={item.title}
-                    textColor={AppColors.BLACK}
-                    textSize={1.7}
-                  />
-                </View>
-                <TouchableOpacity onPress={() => setModalMenu(true)}>
+          <FlatList
+            data={categoriesData?.data}
+            ItemSeparatorComponent={<LineBreak space={2} />}
+            contentContainerStyle={{
+              backgroundColor: AppColors.WHITE,
+              paddingHorizontal: responsiveWidth(5),
+              paddingVertical: responsiveHeight(2.5),
+              borderRadius: 20,
+            }}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 20,
+                      }}>
+                      <Feather
+                        name={'trending-up'}
+                        size={responsiveFontSize(2.5)}
+                        color={AppColors.BLACK}
+                      />
+                      {/* {item.icon} */}
+                      <AppText
+                        title={item.subCategoryName}
+                        textColor={AppColors.BLACK}
+                        textSize={1.7}
+                      />
+                    </View>
+                    {/* <TouchableOpacity onPress={() => setModalMenu(true)}>
                   <Entypo
                     name={'dots-three-vertical'}
                     size={responsiveFontSize(2)}
                     color={AppColors.BLACK}
                   />
+                </TouchableOpacity> */}
+                  </View>
                 </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+              );
+            }}
+          />
+        </>
+      )}
     </View>
   );
 };

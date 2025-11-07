@@ -1,11 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   ScrollView,
   TouchableOpacity,
   Image,
   FlatList,
+  Alert,
 } from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import LineBreak from '../../../components/LineBreak';
@@ -25,6 +25,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useCustomNavigation} from '../../../utils/Hooks';
 import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
+import {useLazyGetProfileQuery} from '../../../redux/service';
+import Loader from '../../../components/Loader';
+import {IMAGE_URL} from '../../../redux/constant';
+import {useIsFocused} from '@react-navigation/native';
 
 const data = [
   {
@@ -346,6 +350,16 @@ const data = [
 const Account = () => {
   const {navigateToRoute} = useCustomNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [getProfile, {data: profileData, isLoading}] = useLazyGetProfileQuery();
+  const isFocused = useIsFocused();
+  // const {user} = useSelector(state => state.persistedData);
+  console.log('user data ===>', profileData);
+
+  useEffect(() => {
+    if (isFocused) {
+      getProfile();
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView
@@ -366,183 +380,215 @@ const Account = () => {
           </TouchableOpacity>
         }
       />
-
-      <DeleteMoodDairy
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        heading={'LOGOUT'}
-        title={'Sure you want to logout?'}
-        handlePress={() => navigateToRoute('Auth')}
-      />
-
-      <LineBreak space={3} />
-
-      <TouchableOpacity onPress={() => navigateToRoute('UpgradePlan')}>
-        <Image
-          source={AppImages.account_banner}
-          style={{
-            width: responsiveWidth(90),
-            height: responsiveHeight(10),
-            alignSelf: 'center',
-          }}
-          resizeMode="contain"
+      {isLoading ? (
+        <Loader
+          style={{marginVertical: responsiveHeight(5)}}
+          color={AppColors.PRIMARY}
         />
-      </TouchableOpacity>
+      ) : (
+        <>
+          <DeleteMoodDairy
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            heading={'LOGOUT'}
+            title={'Sure you want to logout?'}
+            handlePress={() => navigateToRoute('Auth')}
+          />
 
-      <LineBreak space={3} />
+          <LineBreak space={3} />
 
-      <TouchableOpacity
-        style={{
-          backgroundColor: AppColors.WHITE,
-          borderRadius: 10,
-          paddingHorizontal: responsiveWidth(4),
-          paddingVertical: responsiveHeight(1.5),
-        }}
-        onPress={() => navigateToRoute('PersonalInfo')}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <View style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => navigateToRoute('UpgradePlan')}>
             <Image
-              source={AppImages.profile}
+              source={AppImages.account_banner}
               style={{
-                width: 50,
-                height: 50,
-                borderRadius: 100,
+                width: responsiveWidth(90),
+                height: responsiveHeight(10),
+                alignSelf: 'center',
               }}
+              resizeMode="contain"
             />
+          </TouchableOpacity>
 
-            <View>
-              <AppText
-                title={'Andrew Ainsley'}
-                textColor={AppColors.BLACK}
-                textSize={2.2}
-                textFontWeight
-              />
-              <LineBreak space={0.5} />
-              <AppText
-                title={'andrew.ainsley@yourdomain.com'}
-                textColor={AppColors.DARKGRAY}
-                textSize={1.4}
-              />
-            </View>
-          </View>
-          <View>
-            <SimpleLineIcons
-              name={'arrow-right'}
-              size={responsiveFontSize(2)}
-              color={AppColors.BLACK}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
+          <LineBreak space={3} />
 
-      <LineBreak space={1} />
-
-      <FlatList
-        data={data}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
+          <TouchableOpacity
+            style={{
+              backgroundColor: AppColors.WHITE,
+              borderRadius: 10,
+              paddingHorizontal: responsiveWidth(4),
+              paddingVertical: responsiveHeight(1.5),
+            }}
+            onPress={() =>
+              navigateToRoute('PersonalInfo', {profileData: profileData?.data})
+            }>
+            <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginTop:
-                  item.id <= 3 ||
-                  item.id == 5 ||
-                  item.id == 6 ||
-                  item.id == 7 ||
-                  item.id == 8 ||
-                  item.id >= 10
-                    ? 0
-                    : responsiveHeight(1),
-                borderTopLeftRadius:
-                  item.id == 5 ||
-                  item.id == 2 ||
-                  item.id == 3 ||
-                  item.id == 6 ||
-                  item.id == 7 ||
-                  item.id == 8 ||
-                  item.id >= 10
-                    ? 0
-                    : 10,
-                borderTopRightRadius:
-                  item.id == 5 ||
-                  item.id == 2 ||
-                  item.id == 3 ||
-                  item.id == 6 ||
-                  item.id == 7 ||
-                  item.id == 8 ||
-                  item.id >= 10
-                    ? 0
-                    : 10,
-                borderBottomLeftRadius:
-                  item.id == 5 ||
-                  item.id == 1 ||
-                  item.id == 4 ||
-                  item.id == 2 ||
-                  item.id == 6 ||
-                  item.id == 7 ||
-                  item.id == 9 ||
-                  item.id == 10 ||
-                  item.id == 11 ||
-                  item.id == 12 ||
-                  item.id == 13 ||
-                  item.id == 14 ||
-                  item.id == 15 ||
-                  item.id == 16
-                    ? 0
-                    : 10,
-                borderBottomRightRadius:
-                  item.id == 5 ||
-                  item.id == 1 ||
-                  item.id == 4 ||
-                  item.id == 2 ||
-                  item.id == 6 ||
-                  item.id == 7 ||
-                  item.id == 9 ||
-                  item.id == 10 ||
-                  item.id == 11 ||
-                  item.id == 12 ||
-                  item.id == 13 ||
-                  item.id == 14 ||
-                  item.id == 15 ||
-                  item.id == 16
-                    ? 0
-                    : 10,
-                paddingVertical: responsiveHeight(1.5),
-                paddingHorizontal: responsiveWidth(4),
-                backgroundColor: AppColors.WHITE,
-              }}
-              onPress={() => {
-                if (item.navTo) {
-                  navigateToRoute(item.navTo, {data: item.data});
-                } else if (item.id == 17) {
-                  setModalVisible(true);
-                }
               }}>
               <View
-                style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-                {item.leftIcon}
-                <AppText
-                  title={item.title}
-                  textColor={
-                    item.id == 17 ? AppColors.RED_COLOR : AppColors.BLACK
+                style={{flexDirection: 'row', gap: 20, alignItems: 'center'}}>
+                <Image
+                  source={
+                    profileData?.data?.image
+                      ? {uri: `${IMAGE_URL}${profileData?.data?.image}`}
+                      : AppImages.profile
                   }
-                  textSize={2}
-                  textFontWeight
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 100,
+                  }}
+                />
+
+                <View>
+                  <AppText
+                    title={profileData?.data?.fullName}
+                    textColor={AppColors.BLACK}
+                    textSize={2.2}
+                    textFontWeight
+                  />
+                  <LineBreak space={0.5} />
+                  <AppText
+                    title={profileData?.data?.email}
+                    textColor={AppColors.DARKGRAY}
+                    textSize={1.4}
+                  />
+                </View>
+              </View>
+              <View>
+                <SimpleLineIcons
+                  name={'arrow-right'}
+                  size={responsiveFontSize(2)}
+                  color={AppColors.BLACK}
                 />
               </View>
-              {item.rightArrow}
-            </TouchableOpacity>
-          );
-        }}
-      />
-      <LineBreak space={2} />
+            </View>
+          </TouchableOpacity>
+
+          <LineBreak space={1} />
+
+          <FlatList
+            data={data}
+            renderItem={({item}) => {
+              return (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop:
+                      item.id <= 3 ||
+                      item.id == 5 ||
+                      item.id == 6 ||
+                      item.id == 7 ||
+                      item.id == 8 ||
+                      item.id >= 10
+                        ? 0
+                        : responsiveHeight(1),
+                    borderTopLeftRadius:
+                      item.id == 5 ||
+                      item.id == 2 ||
+                      item.id == 3 ||
+                      item.id == 6 ||
+                      item.id == 7 ||
+                      item.id == 8 ||
+                      item.id >= 10
+                        ? 0
+                        : 10,
+                    borderTopRightRadius:
+                      item.id == 5 ||
+                      item.id == 2 ||
+                      item.id == 3 ||
+                      item.id == 6 ||
+                      item.id == 7 ||
+                      item.id == 8 ||
+                      item.id >= 10
+                        ? 0
+                        : 10,
+                    borderBottomLeftRadius:
+                      item.id == 5 ||
+                      item.id == 1 ||
+                      item.id == 4 ||
+                      item.id == 2 ||
+                      item.id == 6 ||
+                      item.id == 7 ||
+                      item.id == 9 ||
+                      item.id == 10 ||
+                      item.id == 11 ||
+                      item.id == 12 ||
+                      item.id == 13 ||
+                      item.id == 14 ||
+                      item.id == 15 ||
+                      item.id == 16
+                        ? 0
+                        : 10,
+                    borderBottomRightRadius:
+                      item.id == 5 ||
+                      item.id == 1 ||
+                      item.id == 4 ||
+                      item.id == 2 ||
+                      item.id == 6 ||
+                      item.id == 7 ||
+                      item.id == 9 ||
+                      item.id == 10 ||
+                      item.id == 11 ||
+                      item.id == 12 ||
+                      item.id == 13 ||
+                      item.id == 14 ||
+                      item.id == 15 ||
+                      item.id == 16
+                        ? 0
+                        : 10,
+                    paddingVertical: responsiveHeight(1.5),
+                    paddingHorizontal: responsiveWidth(4),
+                    backgroundColor: AppColors.WHITE,
+                  }}
+                  onPress={() => {
+                    if (item.navTo && item.id == 5) {
+                      navigateToRoute(item.navTo, {
+                        data: {
+                          moods: profileData?.data?.emojiTheme,
+                          colors: profileData?.data?.emojiColor,
+                        },
+                      });
+                    } else if (item.id == 17) {
+                      setModalVisible(true);
+                    } else if (item.id === 6) {
+                      // alert('hello world')
+                      navigateToRoute(item.navTo, {
+                        data: profileData.data?.activities,
+                        userId: profileData?.data?._id
+                      });
+                    } else {
+                      navigateToRoute(item.navTo);
+                    }
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 10,
+                    }}>
+                    {item.leftIcon}
+                    <AppText
+                      title={item.title}
+                      textColor={
+                        item.id == 17 ? AppColors.RED_COLOR : AppColors.BLACK
+                      }
+                      textSize={2}
+                      textFontWeight
+                    />
+                  </View>
+                  {item.rightArrow}
+                </TouchableOpacity>
+              );
+            }}
+          />
+          <LineBreak space={2} />
+        </>
+      )}
     </ScrollView>
   );
 };

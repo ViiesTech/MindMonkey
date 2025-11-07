@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useState } from 'react';
 import {View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
@@ -11,7 +10,8 @@ import AppButton from '../../../components/AppButton';
 
 const DailyReminder = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
-  console.log('route',route?.params)
+  const [time,setTime] = useState('')
+  console.log('route',time)
 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
@@ -46,7 +46,7 @@ const DailyReminder = ({route}) => {
       <LineBreak space={4} />
 
       <View>
-        <TimePicker />
+        <TimePicker setSelectedTime={(time => setTime(time))} />
       </View>
       <LineBreak space={4} />
       <AppText
@@ -61,7 +61,7 @@ const DailyReminder = ({route}) => {
       <View style={{alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('YourSocialRecord')}
+          handlePress={() => navigateToRoute('YourSocialRecord',{...route?.params,dailyReminder:time})}
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

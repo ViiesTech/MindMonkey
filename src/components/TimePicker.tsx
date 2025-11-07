@@ -7,24 +7,36 @@ import AppColors from '../utils/AppColors';
 const { height } = Dimensions.get('window');
 const ITEM_HEIGHT = responsiveHeight(5.5);
 
-const TimePicker = () => {
+type props = {
+  setSelectedTime: (time: any) => void;
+}
+
+const TimePicker = ({ setSelectedTime }: props) => {
   const hoursRef = useRef(null);
   const minutesRef = useRef(null);
   const [selectedHour, setSelectedHour] = useState(10);
-  const [selectedMinute, setSelectedMinute] = useState('25');
+  const [selectedMinute, setSelectedMinute] = useState(25);
   const [amPm, setAmPm] = useState('AM');
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-  const minutes = Array.from({ length: 60 }, (_, i) =>
-    i.toString().padStart(2, '0')
-  );
+  const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
   const amPmOptions = ['AM', 'PM'];
 
-  // Scroll to default positions
   useEffect(() => {
     scrollToInitial(hoursRef, hours.indexOf(selectedHour));
     scrollToInitial(minutesRef, parseInt(selectedMinute, 10));
   }, []);
+
+  // console.log(typeof selectedMinute)
+
+  // console.log('selected',selectedHour,selectedMinute,amPm)
+  const formattedTime = `${selectedHour}:${selectedMinute}`;
+
+  useEffect(() => {
+
+    setSelectedTime(formattedTime)
+
+  }, [selectedHour, selectedMinute])
 
   const scrollToInitial = (ref: any, index: number) => {
     ref.current?.scrollToOffset({
@@ -45,14 +57,12 @@ const TimePicker = () => {
     const isSelected = item === selected;
     return (
       <View style={styles.item}>
-        <Text style={[styles.text, isSelected && styles.selectedText]}>
-          {item}
-        </Text>
+        <Text style={[styles.text, isSelected && styles.selectedText]}>{item}</Text>
       </View>
     );
   };
 
-  const formattedTime = `${selectedHour}:${selectedMinute} ${amPm}`;
+  // console.log(formattedTime)
 
   return (
     <View style={styles.mainContainer}>
@@ -68,7 +78,7 @@ const TimePicker = () => {
           decelerationRate="fast"
           onMomentumScrollEnd={(e) => onScrollEnd(e, hours, setSelectedHour)}
           contentContainerStyle={{
-            paddingVertical: (responsiveHeight(40) / 2) - ITEM_HEIGHT * 1.5,
+            paddingVertical: (responsiveHeight(40) - ITEM_HEIGHT) / 2,
           }}
         />
 
@@ -77,7 +87,7 @@ const TimePicker = () => {
           textSize={3.5}
           textColor={AppColors.PRIMARY}
           textFontWeight
-          style={{ marginHorizontal: responsiveWidth(2) }}
+          style={{ marginHorizontal: responsiveWidth(1.5) }}
         />
 
         {/* Minutes */}
@@ -91,20 +101,18 @@ const TimePicker = () => {
           decelerationRate="fast"
           onMomentumScrollEnd={(e) => onScrollEnd(e, minutes, setSelectedMinute)}
           contentContainerStyle={{
-            paddingVertical: (responsiveHeight(40) / 2) - ITEM_HEIGHT * 1.5,
+            paddingVertical: (responsiveHeight(40) - ITEM_HEIGHT) / 2,
           }}
         />
 
         {/* AM/PM Toggle */}
-        <View style={{ marginLeft: responsiveWidth(2) }}>
+        <View style={styles.amPmContainer}>
           {amPmOptions.map((opt) => (
             <Text
               key={opt}
-              style={[
-                styles.amPmText,
-                amPm === opt && styles.selectedAmPmText,
-              ]}
-              onPress={() => setAmPm(opt)}>
+              style={[styles.amPmText, amPm === opt && styles.selectedAmPmText]}
+              onPress={() => setAmPm(opt)}
+            >
               {opt}
             </Text>
           ))}
@@ -115,7 +123,7 @@ const TimePicker = () => {
       </View>
 
       {/* Display formatted time */}
-      <Text style={styles.finalTime}>{formattedTime}</Text>
+      {/* <Text style={styles.finalTime}>{formattedTime}</Text> */}
     </View>
   );
 };
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 10,
   },
   container: {
     height: responsiveHeight(40),
@@ -155,11 +163,17 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -ITEM_HEIGHT / 2 }],
     height: ITEM_HEIGHT,
     width: '70%',
-    borderRadius: 20,
+    alignSelf: 'center',
+    borderRadius: 15,
     backgroundColor: '#E6F7FF',
     borderWidth: 1,
     borderColor: AppColors.PRIMARY,
-    opacity: 0.3,
+    opacity: 0.35,
+  },
+  amPmContainer: {
+    marginRight: responsiveWidth(3),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   amPmText: {
     fontSize: responsiveHeight(2.4),

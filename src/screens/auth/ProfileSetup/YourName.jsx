@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import {View} from 'react-native';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
-import {useCustomNavigation} from '../../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../../utils/Hooks';
 import LineBreak from '../../../components/LineBreak';
 import AppColors from '../../../utils/AppColors';
 import AppText from '../../../components/AppTextComps/AppText';
@@ -55,7 +55,12 @@ const YourName = () => {
       <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
         <AppButton
           title={'Continue'}
-          handlePress={() => navigateToRoute('YourGender',{name})}
+          handlePress={() => {
+            if(!name) {
+              ShowToast('Please enter your name')
+              return
+            }
+           navigateToRoute('YourGender',{name})}}
           textSize={1.8}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}

@@ -10,9 +10,18 @@ import {
 } from '../../../utils/Responsive_Dimensions';
 import EmojiThemePicker from '../../../components/EmojiThemePicker';
 import AppButton from '../../../components/AppButton';
-import {useCustomNavigation} from '../../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../../utils/Hooks';
+import {useCreateUpdateProfileMutation} from '../../../redux/service';
+import { useSelector } from 'react-redux';
 
-const emojiThemes = [['😡', '😟', '😐', '🙂', '😄']];
+const emojiThemes = [
+  ['😡', '😟', '😐', '🙂', '😄'],
+  ['🥵', '🥺', '😳', '😊', '🥰'],
+  ['🎃', '😠', '🎃', '😐', '🎃'],
+  ['😤', '😣', '😌', '😃', '😶'],
+  ['😡', '😊', '😵', '😀'],
+  ['😠', '😐', '😶', '😄'],
+];
 const colorTheme = [
   {
     id: 1,
@@ -40,16 +49,45 @@ const colorTheme = [
   },
 ];
 
-const EditMoodsColors = () => {
+const EditMoodsColors = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
-  const [selectedTheme, setSelectedTheme] = useState({id: 1});
+  const {data} = route?.params;
+  const [selectedColor, setSelectedColor] = useState({id: data?.colors || 0});
+  const [selectedTheme, setSelectedTheme] = useState({id: data?.moods || 0});
+  const {_id} = useSelector(state => state.persistedData.user)
+  const [createUpdateProfile, {isLoading}] = useCreateUpdateProfileMutation();
+
+  console.log(data);
+
+  const onEditMoodsColors = async () => {
+    let data = new FormData();
+    data.append('emojiTheme', selectedTheme.id);
+    data.append('emojiColor', selectedColor.id);
+    data.append('id',_id)
+
+    await createUpdateProfile(data)
+      .unwrap()
+      .then(res => {
+        console.log('response of edit moods and colors', res);
+        // ShowToast(res.message);
+        if (res.success) {
+          ShowToast('Updated successfully!')
+          goBack();
+        }
+      })
+      .catch(error => {
+        console.log('error while updating moods and colors', error);
+        ShowToast('Some problem occured');
+      });
+  };
 
   return (
     <ScrollView
       style={{
         flex: 1,
         backgroundColor: AppColors.WHITE,
-      }}>
+      }}
+      contentContainerStyle={{paddingBottom: responsiveHeight(10)}}>
       <View
         style={{
           paddingHorizontal: responsiveWidth(5),
@@ -60,31 +98,34 @@ const EditMoodsColors = () => {
       <View>
         <EmojiThemePicker
           emojiThemes={emojiThemes}
-          isEdit={true}
-          handleOnEdit={() => navigateToRoute('SetEmojiTheme', {edit: true})}
+          selectedThemeIndex={selectedTheme}
+          setSelectedThemeIndex={setSelectedTheme}
+          // isEdit={true}
+          // handleOnEdit={() => navigateToRoute('SetEmojiTheme', {edit: true})}
         />
       </View>
+      <LineBreak space={4} />
       <View style={{flex: 1}}>
         <FlatList
           data={colorTheme}
           ItemSeparatorComponent={<LineBreak space={2} />}
           contentContainerStyle={{paddingHorizontal: responsiveWidth(6)}}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return (
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  borderWidth: selectedTheme.id == item.id ? 3 : 1,
+                  borderWidth: selectedColor.id == index ? 3 : 1,
                   borderColor:
-                    selectedTheme.id == item.id
+                    selectedColor.id == index
                       ? AppColors.PRIMARY
                       : AppColors.LIGHTGRAY,
                   paddingHorizontal: responsiveWidth(5),
                   paddingVertical: responsiveHeight(2),
                   borderRadius: 5,
                 }}
-                onPress={() => setSelectedTheme({id: item.id})}>
+                onPress={() => setSelectedColor({id: index})}>
                 <View
                   style={{
                     backgroundColor: item.color,
@@ -135,8 +176,9 @@ const EditMoodsColors = () => {
       <View style={{flex: 1, alignItems: 'center'}}>
         <AppButton
           title={'save'}
-          handlePress={() => {}}
+          handlePress={() => onEditMoodsColors()}
           textSize={1.8}
+          indicator={isLoading}
           btnBackgroundColor={AppColors.PRIMARY}
           btnPadding={18}
           btnWidth={90}

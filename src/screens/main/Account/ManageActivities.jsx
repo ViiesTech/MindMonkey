@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import {
   responsiveFontSize,
@@ -15,7 +14,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import CustomMenu from '../../../components/CustomMenu';
 import EditGroupModal from '../../../components/EditGroupModal';
 import DeleteMoodDairy from '../../../components/DeleteMoodDairy';
-import {useCustomNavigation} from '../../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../../utils/Hooks';
+import {useLazyGetAllCategoriesQuery} from '../../../redux/service/adminApi';
+import Loader from '../../../components/Loader';
+import {useCreateUpdateProfileMutation} from '../../../redux/service';
 
 const data = [
   {id: 1, title: 'Emotions (20)'},
@@ -38,12 +40,51 @@ const data = [
   {id: 18, title: 'Other (10)'},
 ];
 
-const ManageActivities = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+const ManageActivities = ({route}) => {
+  const {userId, data} = route?.params;
+  const [selectedItems, setSelectedItems] = useState(data || []);
+  // const [visible, setVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const {navigateToRoute} = useCustomNavigation();
+  const [getAllCategories, {data: categoriesData, isLoading}] =
+    useLazyGetAllCategoriesQuery();
+  const [createUpdateProfile] = useCreateUpdateProfileMutation();
+  const [activites, setActivities] = useState([]);
+
+  // console.log('user data ===<',userId)
+
+  const isInitialMount = useRef(true);
+
+  // console.log('all activities ===>', categoriesData?.data);
+  // console.log('profileData ===>',data)
+  // console.log(data)
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    saveActivities();
+  }, [selectedItems]);
+
+  useEffect(() => {
+    if (categoriesData?.data.length > 0) {
+      const uniqueCategories = categoriesData?.data.filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex(
+            t => t.categoryId.categoryName === item.categoryId.categoryName,
+          ),
+      );
+      setActivities(uniqueCategories);
+    }
+  }, [categoriesData?.data]);
 
   const toggleSelection = id => {
     setSelectedItems(prev =>
@@ -51,12 +92,39 @@ const ManageActivities = () => {
     );
   };
 
+  const saveActivities = async () => {
+    if (selectedItems?.length > 0) {
+      let data = new FormData();
+      data.append('activities', JSON.stringify(selectedItems));
+      data.append('id', userId);
+
+      await createUpdateProfile(data)
+        .unwrap()
+        .then(res => {
+          console.log('success updating activities ===>', res);
+          if (res.success) {
+            ShowToast('Activities updated successfully');
+            // goBack();
+          } else {
+            ShowToast(res.message);
+          }
+        })
+        .catch(error => {
+          console.log('error updating activities ===>', error);
+          ShowToast('Some problem occured');
+        });
+    }
+  };
+
   return (
     <ScrollView style={{flex: 1, paddingHorizontal: responsiveWidth(5)}}>
       <AppMainHeader heading="manage activities" />
       <LineBreak space={2} />
-
-      <CustomMenu
+      {isLoading ? (
+        <Loader color={AppColors.PRIMARY} />
+      ) : (
+        <>
+          {/* <CustomMenu
         onEdit={() => {
           setModalVisible(true);
           setVisible(false);
@@ -70,72 +138,85 @@ const ManageActivities = () => {
         setVisible={setVisible}
         isChangeFavText={true}
         manageActivities={true}
-      />
+      /> */}
 
-      <EditGroupModal
+          {/* <EditGroupModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
 
-      <DeleteMoodDairy
+          {/* <DeleteMoodDairy
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
         heading="Delete Group Work"
         title="Sure you want to delete this group?"
         subTitle="delete group will remove all activites (8) within. This action cannot be undone."
-      />
+      /> */}
 
-      <FlatList
-        data={data}
-        ItemSeparatorComponent={<LineBreak space={2} />}
-        contentContainerStyle={{
-          backgroundColor: AppColors.WHITE,
-          paddingHorizontal: responsiveWidth(5),
-          paddingVertical: responsiveHeight(4),
-          borderRadius: 20,
-        }}
-        renderItem={({item}) => {
-          const isSelected = selectedItems.includes(item.id);
-
-          return (
-            <TouchableOpacity
-              onPress={() => navigateToRoute('ManageActivitiesDetails')}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center', gap: 20}}>
-                  <TouchableOpacity onPress={() => toggleSelection(item.id)}>
-                    <MaterialIcons
-                      name={
-                        isSelected ? 'check-box' : 'check-box-outline-blank'
-                      }
-                      size={responsiveFontSize(2.5)}
-                      color={AppColors.PRIMARY}
-                    />
-                  </TouchableOpacity>
-                  <AppText
-                    title={item.title}
-                    textColor={AppColors.BLACK}
-                    textSize={1.7}
-                  />
-                </View>
-                <TouchableOpacity onPress={() => setVisible(true)}>
+          <FlatList
+            data={activites}
+            ItemSeparatorComponent={<LineBreak space={2} />}
+            contentContainerStyle={{
+              backgroundColor: AppColors.WHITE,
+              paddingHorizontal: responsiveWidth(5),
+              paddingVertical: responsiveHeight(4),
+              borderRadius: 20,
+            }}
+            renderItem={({item}) => {
+              const isSelected = selectedItems?.includes(item.categoryId._id);
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigateToRoute('ManageActivitiesDetails', {
+                      id: item.categoryId._id,
+                    })
+                  }>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 20,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => toggleSelection(item.categoryId._id)}>
+                        <MaterialIcons
+                          name={
+                            isSelected ? 'check-box' : 'check-box-outline-blank'
+                          }
+                          size={responsiveFontSize(2.5)}
+                          color={AppColors.PRIMARY}
+                        />
+                      </TouchableOpacity>
+                      <AppText
+                        title={
+                          item.categoryId.categoryName.charAt(0).toUpperCase() +
+                          item.categoryId.categoryName.slice(1).toLowerCase()
+                        }
+                        textColor={AppColors.BLACK}
+                        textSize={1.7}
+                      />
+                    </View>
+                    {/* <TouchableOpacity onPress={() => setVisible(true)}>
                   <Entypo
                     name={'dots-three-vertical'}
                     size={responsiveFontSize(2)}
                     color={AppColors.BLACK}
                   />
+                </TouchableOpacity> */}
+                  </View>
                 </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
-      <LineBreak space={2} />
+              );
+            }}
+          />
+          <LineBreak space={2} />
+        </>
+      )}
     </ScrollView>
   );
 };

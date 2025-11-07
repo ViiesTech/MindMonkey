@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
 import AppColors from '../../../utils/AppColors';
@@ -13,7 +12,7 @@ const ProfileFinalization = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigateToRoute('Feel');
+      navigateToRoute('Main');
     }, 1500);
   }, [navigateToRoute]);
 

@@ -34,6 +34,8 @@ type props = {
   lineHeight?: any;
   borderRadius?: any;
   inputContainerPaddingHorizontal?: any;
+  editable?: any;
+  keyboardType?: any
 };
 const AppTextInput = ({
   logo,
@@ -60,6 +62,8 @@ const AppTextInput = ({
   lineHeight,
   borderRadius,
   inputContainerPaddingHorizontal,
+  editable,
+  keyboardType
 }: props) => {
   return (
     <View
@@ -88,6 +92,8 @@ const AppTextInput = ({
         placeholder={inputPlaceHolder}
         value={value}
         onChangeText={onChangeText}
+        editable={editable}
+        keyboardType={keyboardType}
         placeholderTextColor={
           placeholderTextColor ? placeholderTextColor : AppColors.GRAY
         }

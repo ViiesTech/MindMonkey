@@ -63,15 +63,15 @@ export const Apis = createApi({
         };
       },
     }),
-    // getProfile: builder.query({
-    //   query: id => {
-    //     //   console.log('typeeee',type)
-    //     return {
-    //       url: endpoints.GET_PROFILE(id),
-    //       method: 'GET',
-    //     };
-    //   },
-    // }),
+    getProfile: builder.query({
+      query: () => {
+        //   console.log('typeeee',type)
+        return {
+          url: endpoints.GET_PROFILE,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -81,7 +81,8 @@ export const {
   useForgetPasswordMutation,
   useVerifyOTPMutation,
   usePasswordUpdateMutation,
-  useCreateUpdateProfileMutation
+  useCreateUpdateProfileMutation,
+  useLazyGetProfileQuery,
   // useLazyGetProfileQuery,
 
 } = Apis;

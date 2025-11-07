@@ -65,6 +65,9 @@ const Login = () => {
       .then(res => {
         console.log('login response ===>', res);
         ShowToast(res.message);
+       if(res.success) { 
+        navigateToRoute('Main')
+        }
       })
       .catch(error => {
         console.log('error while login ===>', error);

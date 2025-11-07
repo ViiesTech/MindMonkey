@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import AppColors from '../../../utils/AppColors';
-import {useCustomNavigation} from '../../../utils/Hooks';
+import {ShowToast, useCustomNavigation} from '../../../utils/Hooks';
 import CustomHeaderProgress from '../../../components/CustomLinearProgressBar';
 import LineBreak from '../../../components/LineBreak';
 import AppText from '../../../components/AppTextComps/AppText';
@@ -13,6 +13,8 @@ import {
 } from '../../../utils/Responsive_Dimensions';
 import AppIcons from '../../../assets/icons/AppIcons';
 import SVGXml from '../../../components/SVGXML';
+import { useSelector } from 'react-redux';
+import { useCreateUpdateProfileMutation } from '../../../redux/service';
 
 const data = [
   {
@@ -42,10 +44,43 @@ const data = [
   },
 ];
 
-const YourSocialRecord = () => {
+const YourSocialRecord = ({route}) => {
   const {goBack, navigateToRoute} = useCustomNavigation();
   const [selectedIds, setSelectedIds] = useState({id: 0});
+  const [createUpdateProfile,{isLoading}] = useCreateUpdateProfileMutation()
+  const {_id} = useSelector(state => state.persistedData.user)
 
+  // console.log(_id)
+
+  const onUpdateUser = async () => {
+    if(!selectedIds?.title) {
+      ShowToast('Please select any option')
+      return
+    }
+    let data = new FormData()
+    data.append('id',_id)
+    data.append('gender',route?.params?.gender)
+    data.append('emojiTheme',route?.params?.selectedTheme?.id)
+    data.append('emojiColor',route?.params?.selectedColorPalette)
+    data.append('hearFrom',selectedIds?.title)
+    data.append('reminderTime',route?.params?.dailyReminder)
+    data.append('activities',JSON.stringify(route?.params?.activities))
+    data.append('age',route?.params?.ageYears)
+    data.append('fullName',route?.params?.name)
+
+    await createUpdateProfile(data).unwrap().then((res) => {
+      console.log('response of creation profile ===>',res)
+      ShowToast(res.message)
+      if(res.success) {
+        navigateToRoute('ProfileFinalization')
+      }
+    }).catch((error) => {
+      console.log('error creating of profile ===>',error)
+      ShowToast('Some problem occured')
+    })
+
+  }
+ 
   return (
     <View style={{flex: 1, backgroundColor: AppColors.WHITE}}>
       <CustomHeaderProgress
@@ -83,7 +118,7 @@ const YourSocialRecord = () => {
           renderItem={({item}) => {
             return (
               <TouchableOpacity
-                onPress={() => setSelectedIds({id: item.id})}
+                onPress={() => setSelectedIds({id: item.id,title: item.title})}
                 style={{
                   borderWidth: 4,
                   borderColor:
@@ -116,10 +151,11 @@ const YourSocialRecord = () => {
         <View>
           <AppButton
             title={'Finish'}
-            handlePress={() => navigateToRoute('ProfileFinalization')}
+            handlePress={() => onUpdateUser()}
             textSize={1.8}
             btnBackgroundColor={AppColors.PRIMARY}
             btnPadding={18}
+            indicator={isLoading}
             btnWidth={90}
           />
         </View>

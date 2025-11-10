@@ -13,6 +13,8 @@ import AppColors from '../../../utils/AppColors';
 import AppText from '../../../components/AppTextComps/AppText';
 import InsightsChartBg from '../../../components/InsightsChartBg';
 import AppImages from '../../../assets/images/AppImages';
+import WeeklyMoodChart from '../../../components/WeeklyMoodChart';
+import SpeedometerChart from '../../../components/CreditScoreGauge';
 
 const infoData = [
   {id: 1, title: '65', subTitle: 'Largest streak'},
@@ -78,19 +80,26 @@ const Insights = () => {
       <InsightsChartBg
         title="mood chart"
         isShowRightContent={true}
-        imageSrc={AppImages.mood_chart}
+        weeklyChart={<WeeklyMoodChart type="weekly" />}
+        monthlyChart={<WeeklyMoodChart type="monthly" />}
+        yearlyChart={<WeeklyMoodChart type="yearly" />}
       />
 
       <LineBreak space={2} />
 
-      <InsightsChartBg title="mood count" imageSrc={AppImages.mood_count} />
+      <InsightsChartBg
+        title="mood count"
+        weeklyChart={<SpeedometerChart type="weekly"  />}
+        monthlyChart={<SpeedometerChart type="monthly"  />}
+        yearlyChart={<SpeedometerChart type="yearly"  />}
+      />
 
       <LineBreak space={2} />
 
       <InsightsChartBg
         title="average daily mood"
         hideTabs={false}
-        imageSrc={AppImages.mood_chart}
+        simpleRendering={<WeeklyMoodChart type="dayly" />}
       />
 
       <LineBreak space={2} />
@@ -99,7 +108,7 @@ const Insights = () => {
         title="mood stability"
         hideTabs={false}
         showText={true}
-        imageSrc={AppImages.mood_stability}
+        simpleRendering={<SpeedometerChart type="score"  />}
       />
 
       <LineBreak space={3} />

@@ -40,8 +40,8 @@ const socialIcons = [
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('developer68@gmail.com');
+  const [password, setPassword] = useState('12345678');
   const {navigateToRoute} = useCustomNavigation();
   const [login, {isLoading}] = useLoginMutation();
 

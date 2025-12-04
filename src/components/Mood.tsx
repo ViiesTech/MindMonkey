@@ -20,6 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SavedToFavoritesPopup from './SavedToFavoritesPopup';
 import DeleteMoodDairy from './DeleteMoodDairy';
 import CustomMenu from './CustomMenu';
+import AudioRecord from 'react-native-audio-record';
 
 const contentData = [
   {id: 1, title: 'Calm'},

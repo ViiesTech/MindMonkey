@@ -52,7 +52,6 @@ const AboutYourDay = () => {
           textAlignment={'center'}
         />
         <LineBreak space={3} />
-
         <View>
           <FlatList
             data={titles}

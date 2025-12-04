@@ -558,11 +558,13 @@ const Account = () => {
                     } else if (item.id === 6) {
                       // alert('hello world')
                       navigateToRoute(item.navTo, {
-                        data: profileData.data?.activities,
-                        userId: profileData?.data?._id
+                        data: profileData?.data?.activities,
+                        userId: profileData?.data?._id,
                       });
-                    } else {
+                    } else if (item.navTo) {
                       navigateToRoute(item.navTo);
+                    } else {
+                      alert('working in progress');
                     }
                   }}>
                   <View

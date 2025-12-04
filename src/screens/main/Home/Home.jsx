@@ -41,7 +41,6 @@ const Home = () => {
         }
       />
       <LineBreak space={2} />
-
       <Image
         source={AppImages.banner}
         style={{

@@ -52,7 +52,7 @@ const ManageActivities = ({route}) => {
   const [createUpdateProfile] = useCreateUpdateProfileMutation();
   const [activites, setActivities] = useState([]);
 
-  // console.log('user data ===<',userId)
+  console.log('user data ===<',userId)
 
   const isInitialMount = useRef(true);
 

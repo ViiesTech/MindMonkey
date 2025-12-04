@@ -19,6 +19,7 @@
     "react": "19.0.0",
     "react-native": "0.79.3",
     "react-native-app-intro-slider": "^4.0.4",
+    "react-native-audio-record": "^0.2.2",
     "react-native-calendars": "^1.1312.1",
     "react-native-date-picker": "^5.0.13",
     "react-native-gesture-handler": "^2.26.0",

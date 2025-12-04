@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {FlatList, Image, TouchableOpacity, View} from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
 import AppColors from '../utils/AppColors';
 import AppText from './AppTextComps/AppText';
 import {
@@ -10,10 +10,9 @@ import {
 import LineBreak from './LineBreak';
 
 const data = [
-  {id: 1, title: 'Weekly'},
-  {id: 2, title: 'Monthly'},
-  {id: 3, title: 'Yearly'},
-  {id: 4, title: 'Lifetime'},
+  { id: 1, title: 'Weekly' },
+  { id: 2, title: 'Monthly' },
+  { id: 3, title: 'Yearly' },
 ];
 
 type Props = {
@@ -22,6 +21,10 @@ type Props = {
   isShowRightContent?: boolean;
   hideTabs?: boolean;
   showText?: boolean;
+  weeklyChart?: any;
+  monthlyChart?: any;
+  yearlyChart?: any;
+  simpleRendering?: any;
 };
 
 const InsightsChartBg = ({
@@ -29,9 +32,12 @@ const InsightsChartBg = ({
   isShowRightContent = false,
   hideTabs = true,
   showText = false,
-  imageSrc,
+  weeklyChart,
+  monthlyChart,
+  yearlyChart,
+  simpleRendering,
 }: Props) => {
-  const [selectedTab, setSelectedTab] = useState({id: 1});
+  const [selectedTab, setSelectedTab] = useState({ id: 1 });
   return (
     <View
       style={{
@@ -88,7 +94,7 @@ const InsightsChartBg = ({
             borderRadius: 10,
           }}
           horizontal
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 style={{
@@ -100,7 +106,7 @@ const InsightsChartBg = ({
                   justifyContent: 'center',
                   borderRadius: 10,
                 }}
-                onPress={() => setSelectedTab({id: item.id})}>
+                onPress={() => setSelectedTab({ id: item.id })}>
                 <AppText
                   title={item.title}
                   textColor={
@@ -117,15 +123,8 @@ const InsightsChartBg = ({
 
       {hideTabs && <LineBreak space={1} />}
 
-      <Image
-        source={imageSrc}
-        style={{
-          width: responsiveWidth(85),
-          alignSelf: 'center',
-          height: responsiveHeight(40),
-        }}
-        resizeMode="contain"
-      />
+      {selectedTab.id == 1 ? weeklyChart : selectedTab.id == 2 ? monthlyChart : yearlyChart}
+      {!hideTabs && simpleRendering}
 
       {showText && <LineBreak space={4} />}
 

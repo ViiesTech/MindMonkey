@@ -19,26 +19,26 @@ import {useLazyGetAllCategoriesQuery} from '../../../redux/service/adminApi';
 import Loader from '../../../components/Loader';
 import {useCreateUpdateProfileMutation} from '../../../redux/service';
 
-const data = [
-  {id: 1, title: 'Emotions (20)'},
-  {id: 2, title: 'Work (8)'},
-  {id: 3, title: 'School (8)'},
-  {id: 4, title: 'Health (7)'},
-  {id: 5, title: 'Relationships (10)'},
-  {id: 6, title: 'Sleep (8)'},
-  {id: 7, title: 'Food (10)'},
-  {id: 8, title: 'Drinks (10)'},
-  {id: 9, title: 'Hobbies (11)'},
-  {id: 10, title: 'Social (8)'},
-  {id: 11, title: 'Self Improvement (8)'},
-  {id: 12, title: 'Productive/Creative (7)'},
-  {id: 13, title: 'Chores (8)'},
-  {id: 14, title: 'Weather (10)'},
-  {id: 15, title: 'Beauty (10)'},
-  {id: 16, title: 'Events (10)'},
-  {id: 17, title: 'Sports (8)'},
-  {id: 18, title: 'Other (10)'},
-];
+// const data = [
+//   {id: 1, title: 'Emotions (20)'},
+//   {id: 2, title: 'Work (8)'},
+//   {id: 3, title: 'School (8)'},
+//   {id: 4, title: 'Health (7)'},
+//   {id: 5, title: 'Relationships (10)'},
+//   {id: 6, title: 'Sleep (8)'},
+//   {id: 7, title: 'Food (10)'},
+//   {id: 8, title: 'Drinks (10)'},
+//   {id: 9, title: 'Hobbies (11)'},
+//   {id: 10, title: 'Social (8)'},
+//   {id: 11, title: 'Self Improvement (8)'},
+//   {id: 12, title: 'Productive/Creative (7)'},
+//   {id: 13, title: 'Chores (8)'},
+//   {id: 14, title: 'Weather (10)'},
+//   {id: 15, title: 'Beauty (10)'},
+//   {id: 16, title: 'Events (10)'},
+//   {id: 17, title: 'Sports (8)'},
+//   {id: 18, title: 'Other (10)'},
+// ];
 
 const ManageActivities = ({route}) => {
   const {userId, data} = route?.params;

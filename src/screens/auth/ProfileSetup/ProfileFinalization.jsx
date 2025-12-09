@@ -12,7 +12,7 @@ const ProfileFinalization = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigateToRoute('Main');
+      navigateToRoute('AboutYourDay');
     }, 1500);
   }, [navigateToRoute]);
 

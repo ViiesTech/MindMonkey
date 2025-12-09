@@ -27,9 +27,9 @@ const Stack = createStackNavigator();
 const Auth = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Splash"
+      // initialRouteName="Splash"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Splash" component={Splash} />
+      {/* <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="OnBoarding" component={OnBoarding} />
       <Stack.Screen name="GetStarted" component={GetStarted} />
       <Stack.Screen name="Login" component={Login} />
@@ -49,11 +49,11 @@ const Auth = () => {
       <Stack.Screen
         name="ProfileFinalization"
         component={ProfileFinalization}
-      />
-      <Stack.Screen name="Feel" component={Feel} />
+      /> */}
+      <Stack.Screen name="AboutYourDay" component={AboutYourDay} />
       <Stack.Screen name="MoreDetails" component={MoreDetails} />
       <Stack.Screen name="ShareMood" component={ShareMood} />
-      <Stack.Screen name="AboutYourDay" component={AboutYourDay} />
+      <Stack.Screen name="Feel" component={Feel} />
     </Stack.Navigator>
   );
 };

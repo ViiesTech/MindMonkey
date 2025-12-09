@@ -21,6 +21,8 @@ type props = {
   leftIcon?: any;
   activeOpacity?: any;
   indicator?: any;
+  onPressIn?: any;
+  onPressOut?: any;
 };
 const AppButton = ({
   title,
@@ -36,10 +38,14 @@ const AppButton = ({
   textFontWeight = true,
   textSize = 2.5,
   activeOpacity,
-  indicator
+  indicator,
+  onPressIn,
+  onPressOut,
 }: props) => {
   return (
     <TouchableOpacity
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       onPress={handlePress}
       activeOpacity={activeOpacity}
       style={{

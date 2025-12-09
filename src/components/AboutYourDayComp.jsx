@@ -14,35 +14,27 @@ import LineBreak from './LineBreak';
 import AppIcons from '../assets/icons/AppIcons';
 import SVGXml from './SVGXML';
 
-const emojiData = [
-  {id: 1, title: 'Calm', emoji: AppIcons.family},
-  {id: 2, title: 'Calm', emoji: AppIcons.family},
-  {id: 3, title: 'Calm', emoji: AppIcons.family},
-  {id: 4, title: 'Calm', emoji: AppIcons.family},
-  {id: 5, title: 'Calm', emoji: AppIcons.family},
-  {id: 6, title: 'Calm', emoji: AppIcons.family},
-  {id: 7, title: 'Calm', emoji: AppIcons.family},
-  {id: 8, title: 'Calm', emoji: AppIcons.family},
-  {id: 9, title: 'Calm', emoji: AppIcons.family},
-  {id: 10, title: 'Calm', emoji: AppIcons.family},
-  {id: 11, title: 'Calm', emoji: AppIcons.family},
-  {id: 12, title: 'Calm', emoji: AppIcons.family},
-  {id: 13, title: 'Calm', emoji: AppIcons.family},
-  {id: 14, title: 'Calm', emoji: AppIcons.family},
-  {id: 15, title: 'Calm', emoji: AppIcons.family},
-  {id: 16, title: 'Calm', emoji: AppIcons.family},
-];
+// const emojiData = [
+//   {id: 1, title: 'Calm', emoji: AppIcons.family},
+//   {id: 2, title: 'Calm', emoji: AppIcons.family},
+//   {id: 3, title: 'Calm', emoji: AppIcons.family},
+//   {id: 4, title: 'Calm', emoji: AppIcons.family},
+//   {id: 5, title: 'Calm', emoji: AppIcons.family},
+//   {id: 6, title: 'Calm', emoji: AppIcons.family},
+//   {id: 7, title: 'Calm', emoji: AppIcons.family},
+//   {id: 8, title: 'Calm', emoji: AppIcons.family},
+//   {id: 9, title: 'Calm', emoji: AppIcons.family},
+//   {id: 10, title: 'Calm', emoji: AppIcons.family},
+//   {id: 11, title: 'Calm', emoji: AppIcons.family},
+//   {id: 12, title: 'Calm', emoji: AppIcons.family},
+//   {id: 13, title: 'Calm', emoji: AppIcons.family},
+//   {id: 14, title: 'Calm', emoji: AppIcons.family},
+//   {id: 15, title: 'Calm', emoji: AppIcons.family},
+//   {id: 16, title: 'Calm', emoji: AppIcons.family},
+// ];
 
-const AboutYourDayComp = ({title}) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+const AboutYourDayComp = ({data, title,selectedItems,toggleSelect}) => {
 
-  const toggleSelect = itemId => {
-    setSelectedItems(prev =>
-      prev.includes(itemId)
-        ? prev.filter(id => id !== itemId)
-        : [...prev, itemId],
-    );
-  };
 
   return (
     <View
@@ -69,7 +61,7 @@ const AboutYourDayComp = ({title}) => {
           textFontWeight
         />
 
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+        {/* <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
           <TouchableOpacity onPress={() => {}}>
             <Entypo
               name={'plus'}
@@ -84,21 +76,21 @@ const AboutYourDayComp = ({title}) => {
               color={AppColors.GRAY}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <LineBreak space={2} />
 
       <FlatList
-        data={emojiData}
+        data={data}
         numColumns={4}
-        columnWrapperStyle={{flex: 1, justifyContent: 'space-between'}}
+        columnWrapperStyle={{gap: 20}}
         ItemSeparatorComponent={<LineBreak space={2.5} />}
         renderItem={({item}) => {
-          const isSelected = selectedItems.includes(item.id);
+          const isSelected = selectedItems?.includes(item._id);
           return (
             <TouchableOpacity
               style={{alignItems: 'center'}}
-              onPress={() => toggleSelect(item.id)}>
+              onPress={() => toggleSelect(item._id)}>
               <View
                 style={{
                   borderWidth: 1,
@@ -112,11 +104,12 @@ const AboutYourDayComp = ({title}) => {
                   alignItems: 'center',
                   borderRadius: 100,
                 }}>
-                <SVGXml icon={item.emoji} width={30} height={30} />
+                {/* <SVGXml icon={item.emoji} width={30} height={30} /> */}
+                <AppText textSize={2.7} title={item.emoji} />
               </View>
               <LineBreak space={0.5} />
               <AppText
-                title={item.title}
+                title={item.subCategoryName}
                 textColor={AppColors.GRAY}
                 textSize={1.7}
               />
@@ -127,14 +120,14 @@ const AboutYourDayComp = ({title}) => {
 
       <LineBreak space={2} />
 
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <AppText
           title={'Show More...'}
           textColor={'#F48A88'}
           textSize={1.7}
           textAlignment={'center'}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

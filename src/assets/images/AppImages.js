@@ -20,4 +20,5 @@ export default AppImages = {
     app_logo: require('./App_logo.png'),
     cloud_one: require('./cloud_one.png'),
     cloud_two: require('./cloud_two.png'),
+    cross: require('../images/X.png')
 };
